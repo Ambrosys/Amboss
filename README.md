@@ -1,4 +1,4 @@
 Amboss
 ======
 
-**Amb** rosys **O** pen-**S** ource-**S** oftware Library
+**Amb**rosys **O** pen-**S** ource-**S** oftware Library
