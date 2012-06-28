@@ -1,4 +1,4 @@
 Amboss
 ======
 
-Ambrosys Open-Source-Software Library
+*Amb*rosys *O*pen-*S*ource-*S*oftware Library
