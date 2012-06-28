@@ -12,8 +12,8 @@
 #include <memory>
 #include <type_traits>
 
-#include <Library/KMLEntity.h>
-#include <Library/KMLWriterHelper.h>
+#include <Amboss/KML/KMLEntity.h>
+#include <Amboss/KML/KMLWriterHelper.h>
 
 namespace Amboss {
 namespace KML {

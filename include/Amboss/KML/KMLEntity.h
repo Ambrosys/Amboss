@@ -16,6 +16,7 @@ namespace Amboss {
 namespace KML {
 
 
+
 template< class T >
 struct WriteKMLObject ;
 
