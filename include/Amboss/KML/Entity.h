@@ -18,31 +18,33 @@ namespace KML {
 
 
 template< class T >
-struct WriteKMLObject ;
+struct WriteObject ;
 
 
 
 template< class T >
-inline void writeKMLObject( std::ostream &out , const T &t , size_t indent , const std::string &name )
+inline void writeObject( std::ostream &out , const T &t , size_t indent , const std::string &name )
 {
-    WriteKMLObject< T >::write( out , t , indent , name );
+    WriteObject< T >::write( out , t , indent , name );
 }
 
 
-class KMLEntity
+class Entity
 {
 public:
 
-    KMLEntity( void ) : object_( nullptr ) { }
+    Entity( void ) : object_( nullptr ) { }
 
     template< class T >
-    KMLEntity( T t , const std::string &name = std::string( "" ) ) : object_( new WriteableModel< T >( t , name ) ) { }
+    Entity( T t , const std::string &name = std::string( "" ) ) : object_( new WriteableModel< T >( t , name ) ) { }
 
-    KMLEntity( const KMLEntity &e ) : object_( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) { }
+    Entity( const Entity &e ) : object_( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) { }
 
-    ~KMLEntity( void ) { }
+    Entity( const Entity &e , const std::string &name ) : object_( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) { }
 
-    const KMLEntity& operator=( const KMLEntity &e ) {
+    ~Entity( void ) { }
+
+    const Entity& operator=( const Entity &e ) {
         object_.reset( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) ;
         return *this;
     }
@@ -66,7 +68,7 @@ private:
 	WriteableModel( T t , const std::string &name ) : data_( t ) , name_( name ) { }
 	~WriteableModel( void ) { }
 	void write( std::ostream &out , size_t indent ) const {
-	    WriteKMLObject< T >::write( out , data_ , indent , name_ ); }
+	    WriteObject< T >::write( out , data_ , indent , name_ ); }
         WriteableConcept* copy( void ) const {
             return new WriteableModel( data_ , name_ );
         }
@@ -80,7 +82,7 @@ private:
 
 
 
-// static_assert( std::is_default_constructible< KMLEntity > , "" );
+// static_assert( std::is_default_constructible< Entity > , "" );
 
 
 

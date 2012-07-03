@@ -1,5 +1,5 @@
 /*
- * KMLEntityTest.cpp
+ * EntityTest.cpp
  *
  *  Created on: 19.06.2012
  *      Author: karsten
@@ -11,8 +11,8 @@
 #include <cppunit/config/SourcePrefix.h>
 #include <cppunit/extensions/HelperMacros.h>
 
-#include <Amboss/KML/KMLEntity.h>
-#include <Amboss/KML/KMLWriterHelper.h>
+#include <Amboss/KML/Entity.h>
+#include <Amboss/KML/WriterHelper.h>
 
 #define TEST_NAME KMLEntityTest
 
@@ -31,11 +31,11 @@ namespace Amboss {
 namespace KML {
 
 template<>
-struct WriteKMLObject< TestingPoint >
+struct WriteObject< TestingPoint >
 {
     static inline void write( std::ostream &out , const TestingPoint &p , size_t indent , const std::string &name )
     {
-	writeKMLPoint( out , p.x , p.y , indent , name );
+	writePoint( out , p.x , p.y , indent , name );
     }
 };
 
@@ -69,40 +69,40 @@ protected:
 
     void testDefaultConstruction( void )
     {
-        KMLEntity e;
+        Entity e;
     }
 
     void testValueConstruction( void )
     {
         TestingPoint p;
-        KMLEntity e( p );
+        Entity e( p );
     }
 
     void testCopyConstruction( void )
     {
-        KMLEntity e1;
-        KMLEntity e2( e1 );
+        Entity e1;
+        Entity e2( e1 );
 
         TestingPoint p;
-        KMLEntity e3( p );
-        KMLEntity e4( e3 );
+        Entity e3( p );
+        Entity e4( e3 );
     }
 
     void testCopying( void )
     {
-        KMLEntity e1;
-        KMLEntity e2;
+        Entity e1;
+        Entity e2;
         e2 = e1;
 
         TestingPoint p1 , p2;
-        KMLEntity e3( p1 );
-        KMLEntity e4( p2 );
+        Entity e3( p1 );
+        Entity e4( p2 );
         e3 = e4;
     }
 
     void testOneTestingPoint( void )
     {
-        KMLEntity e( TestingPoint( 10.0 , 10.0 ) );
+        Entity e( TestingPoint( 10.0 , 10.0 ) );
         ostringstream str;
         e.write( str , 0 );
 	
@@ -120,8 +120,8 @@ protected:
 
     void testTwoTestingPoint( void )
     {
-        KMLEntity e1( TestingPoint( 10.0 , 10.0 ) );
-        KMLEntity e2( TestingPoint( 5.0 , 5.0 ) );
+        Entity e1( TestingPoint( 10.0 , 10.0 ) );
+        Entity e2( TestingPoint( 5.0 , 5.0 ) );
         e2 = e1;
         ostringstream str;
         e2.write( str , 0 );
