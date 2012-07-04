@@ -98,7 +98,9 @@ void writeRange( std::ostream &out , const R &r )
 template< class R >
 void writeRange( const std::string &filename , const R &r )
 {
-    
+    std::ofstream fout( filename.c_str() );
+    fout.precision( 14 );
+    writeRange( fout , r );
 }
 
 
