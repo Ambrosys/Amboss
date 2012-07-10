@@ -74,7 +74,7 @@ template< class T >
 void write( const std::string &filename , T t , const std::string& name = "" )
 {
     std::ofstream fout( filename.c_str() );
-    write( t , fout , name );
+    write( fout , t , name );
 }
 
 namespace Detail {
