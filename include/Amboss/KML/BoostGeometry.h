@@ -133,18 +133,18 @@ namespace KML {
         }
     };
 
-    // template< typename Point >
-    // struct WriteObject< boost::geometry::model::multi_point< Point >  >
-    // {
-    //     typedef boost::geometry::model::multi_point< Point > MultiPoint;
-    //     static void write( std::ostream &out , const MultiPoint &mp , size_t indent , const std::string &name )
-    //     {
-    //         Folder folder;
-    //         for( size_t i=0 ; i<mp.size() ; ++i )
-    //             folder.add( mp[i] );
-    //         writeObject( out , folder , indent , name );
-    //     }
-    // };
+    template< typename Point >
+    struct WriteObject< boost::geometry::model::multi_point< Point >  >
+    {
+        typedef boost::geometry::model::multi_point< Point > MultiPoint;
+        static void write( std::ostream &out , const MultiPoint &mp , size_t indent )
+        {
+            Folder folder;
+            for( size_t i=0 ; i<mp.size() ; ++i )
+                folder.add( mp[i] );
+            writeObject( out , folder , indent );
+        }
+    };
 
 
 
