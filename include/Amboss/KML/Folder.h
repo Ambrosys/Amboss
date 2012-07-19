@@ -13,7 +13,7 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 
-#include <Amboss/KML/Writeable.h>
+#include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
 
@@ -24,7 +24,7 @@ class Folder
 {
 public:
 
-    typedef std::vector< Writeable > SequenceType;
+    typedef std::vector< Feature > SequenceType;
 
     Folder( void ) : data_() , name_( "" ) { }
     Folder( const std::string &name ) : data_() , name_( name ) { }
@@ -32,7 +32,7 @@ public:
     template< class T >
     void add( T t )
     {
-        data_.push_back( Writeable( t ) );
+        data_.push_back( Feature( t ) );
     }
 
     std::string& name( void ) { return name_; }
@@ -48,7 +48,7 @@ private:
 };
 
 template<>
-struct WriteObject< Folder >
+struct WriteFeature< Folder >
 {
     static void write( std::ostream &out , const Folder &data , size_t indent  )
     {
@@ -82,8 +82,8 @@ Folder makeFolder( Iter first , Iter last , const std::string &name = std::strin
 }
 
 template< class Iter >
-Folder makePlacemarkFolder( Iter first , Iter last , const std::string &foldername = std::string( "" ) ,
-                            const std::string placemarkname = std::string( "" ) )
+Folder makeFolderFromGeometry( Iter first , Iter last , const std::string &foldername = std::string( "" ) ,
+                               const std::string placemarkname = std::string( "" ) )
 {
     Folder f( foldername );
     while( first != last ) f.add( Placemark( *first++ , placemarkname ) );
@@ -98,10 +98,10 @@ Folder makeFolderFromRange( const R &r , const std::string &name = std::string( 
 }
 
 template< class R >
-Folder makePlacemarkFolderFromRange( const R &r , const std::string &foldername = std::string( "" ) ,
+Folder makeFolderFromGeometryRange( const R &r , const std::string &foldername = std::string( "" ) ,
                                      const std::string &placemarkname = std::string( "" ) )
 {
-    return makePlacemarkFolder( boost::const_begin( r ) , boost::const_end( r ) , foldername , placemarkname );
+    return makeFolderFromGeometry( boost::const_begin( r ) , boost::const_end( r ) , foldername , placemarkname );
 }
 
 

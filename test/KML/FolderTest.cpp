@@ -65,7 +65,7 @@ TEST( KMLFolder , writeOnePlacemark )
     Folder f;
     f.add( Placemark( TestingPoint( 10.0 , 10.0 ) ) );
     ostringstream str;
-    writeObject( str , f , 0 );
+    writeFeature( str , f , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -86,7 +86,7 @@ TEST( KMLFolder , writeOnePlacemarkWithFolderName )
     Folder f( "Folder" );
     f.add( Placemark( TestingPoint( 10.0 , 10.0 ) ) );
     ostringstream str;
-    writeObject( str , f , 0 );
+    writeFeature( str , f , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -109,7 +109,7 @@ TEST( KMLFolder , writeTwoPlacemarks )
     f.add( Placemark( TestingPoint( 10.0 , 10.0 ) ) );
     f.add( Placemark( TestingPoint( 20.0 , 20.0 ) ) );
     ostringstream str;
-    writeObject( str , f , 0 );
+    writeFeature( str , f , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -141,7 +141,7 @@ TEST( KMLFolder , writeFolder )
     Folder f2( "Folder" );
     f2.add( f );
     ostringstream str;
-    writeObject( str , f2 , 0 );
+    writeFeature( str , f2 , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -172,7 +172,7 @@ TEST( KMLFolder , writeFolder )
 TEST( KMLFolder , makeFolder )
 {
     ostringstream str;
-    writeObject( str , makeFolder( Placemark( TestingPoint( 10.0 , 10.0 ) ) ) , 0 );
+    writeFeature( str , makeFolder( Placemark( TestingPoint( 10.0 , 10.0 ) ) ) , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -189,39 +189,13 @@ TEST( KMLFolder , makeFolder )
 }
 
 
-TEST( KMLFolder , makeFolderFromContainer )
+TEST( KMLFolder , makeFolderFromGeometryContainer )
 {
     ostringstream str;
     std::vector< TestingPoint > tp;
     tp.push_back( TestingPoint( 10.0 , 10.0 ) );
     tp.push_back( TestingPoint( 20.0 , 20.0 ) );
-    writeObject( str , makeFolder( tp.begin() , tp.end() ) , 0 );
-
-    string cmp = 
-        "<Folder>\n"
-        "  <Point>\n"
-        "    <coordinates>\n"
-        "      10,10,0 \n"
-        "    </coordinates>\n"
-        "  </Point>\n"
-        "  <Point>\n"
-        "    <coordinates>\n"
-        "      20,20,0 \n"
-        "    </coordinates>\n"
-        "  </Point>\n"
-        "</Folder>\n";
-
-    EXPECT_EQ( cmp , str.str() );
-}
-
-
-TEST( KMLFolder , makePlacemarkFolderFromContainer )
-{
-    ostringstream str;
-    std::vector< TestingPoint > tp;
-    tp.push_back( TestingPoint( 10.0 , 10.0 ) );
-    tp.push_back( TestingPoint( 20.0 , 20.0 ) );
-    writeObject( str , makePlacemarkFolder( tp.begin() , tp.end() , "Folder" , "PM" ) , 0 );
+    writeFeature( str , makeFolderFromGeometry( tp.begin() , tp.end() , "Folder" , "PM" ) , 0 );
 
     string cmp = 
         "<Folder>\n"
@@ -248,39 +222,13 @@ TEST( KMLFolder , makePlacemarkFolderFromContainer )
 }
 
 
-TEST( KMLFolder , makeFolderFromRange )
+TEST( KMLFolder , makeFolderFromGeometryRange )
 {
     ostringstream str;
     std::vector< TestingPoint > tp;
     tp.push_back( TestingPoint( 10.0 , 10.0 ) );
     tp.push_back( TestingPoint( 20.0 , 20.0 ) );
-    writeObject( str , makeFolderFromRange( tp ) , 0 );
-
-    string cmp = 
-        "<Folder>\n"
-        "  <Point>\n"
-        "    <coordinates>\n"
-        "      10,10,0 \n"
-        "    </coordinates>\n"
-        "  </Point>\n"
-        "  <Point>\n"
-        "    <coordinates>\n"
-        "      20,20,0 \n"
-        "    </coordinates>\n"
-        "  </Point>\n"
-        "</Folder>\n";
-
-    EXPECT_EQ( cmp , str.str() );
-}
-
-
-TEST( KMLFolder , makePlacemarkFolderFromRange )
-{
-    ostringstream str;
-    std::vector< TestingPoint > tp;
-    tp.push_back( TestingPoint( 10.0 , 10.0 ) );
-    tp.push_back( TestingPoint( 20.0 , 20.0 ) );
-    writeObject( str , makePlacemarkFolderFromRange( tp , "Folder" , "PM" ) , 0 );
+    writeFeature( str , makeFolderFromGeometryRange( tp , "Folder" , "PM" ) , 0 );
 
     string cmp = 
         "<Folder>\n"

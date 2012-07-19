@@ -12,7 +12,7 @@
 #ifndef AMBOSS_TEST_TESTINGPOINT_H_INCLUDED
 #define AMBOSS_TEST_TESTINGPOINT_H_INCLUDED
 
-#include <Amboss/KML/Writeable.h>
+#include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/WriterHelper.h>
 
 
@@ -29,7 +29,7 @@ namespace Amboss {
 namespace KML {
 
 template<>
-struct WriteObject< TestingPoint >
+struct WriteGeometry< TestingPoint >
 {
     static inline void write( std::ostream &out , const TestingPoint &p , size_t indent )
     {

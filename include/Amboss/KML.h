@@ -14,7 +14,7 @@
 
 
 // forward includes
-#include <Amboss/KML/Writeable.h>
+#include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/Folder.h>
 #include <Amboss/KML/Document.h>
 #include <Amboss/KML/WriterHelper.h>

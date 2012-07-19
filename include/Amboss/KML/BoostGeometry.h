@@ -19,7 +19,7 @@
 #include <boost/geometry/geometries/linestring.hpp>
 #include <boost/geometry/multi/geometries/multi_point.hpp>
 
-#include <Amboss/KML/Writeable.h>
+#include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/Folder.h>
 #include <Amboss/KML/WriterHelper.h>
 
@@ -28,7 +28,7 @@ namespace Amboss {
 namespace KML {
 
     template< typename Value >
-    struct WriteObject<
+    struct WriteGeometry<
         boost::geometry::model::point< Value , 2 ,
                                        boost::geometry::cs::spherical_equatorial< boost::geometry::degree > > >
     {
@@ -44,7 +44,7 @@ namespace KML {
 
 
     template< typename Point >
-    struct WriteObject< boost::geometry::model::ring< Point >  >
+    struct WriteGeometry< boost::geometry::model::ring< Point >  >
     {
         typedef boost::geometry::model::ring< Point > Ring;
         static void write( std::ostream &out , const Ring &r , size_t indent )
@@ -67,7 +67,7 @@ namespace KML {
     };
 
     template< typename Point >
-    struct WriteObject< boost::geometry::model::box< Point >  >
+    struct WriteGeometry< boost::geometry::model::box< Point >  >
     {
         typedef boost::geometry::model::box< Point > Box;
         static void write( std::ostream &out , const Box &b , size_t indent )
@@ -97,7 +97,7 @@ namespace KML {
     };
 
     template< typename Point >
-    struct WriteObject< boost::geometry::model::segment< Point >  >
+    struct WriteGeometry< boost::geometry::model::segment< Point >  >
     {
         typedef boost::geometry::model::segment< Point > Segment;
         static void write( std::ostream &out , const Segment &s , size_t indent )
@@ -115,7 +115,7 @@ namespace KML {
     };
 
     template< typename Point >
-    struct WriteObject< boost::geometry::model::linestring< Point >  >
+    struct WriteGeometry< boost::geometry::model::linestring< Point >  >
     {
         typedef boost::geometry::model::linestring< Point > LineString;
         static void write( std::ostream &out , const LineString &l , size_t indent )
@@ -134,15 +134,15 @@ namespace KML {
     };
 
     template< typename Point >
-    struct WriteObject< boost::geometry::model::multi_point< Point >  >
+    struct WriteGeometry< boost::geometry::model::multi_point< Point >  >
     {
         typedef boost::geometry::model::multi_point< Point > MultiPoint;
         static void write( std::ostream &out , const MultiPoint &mp , size_t indent )
         {
-            Folder folder;
+            out << getIndent( indent ) << "<MultiGeometry>" << "\n";
             for( size_t i=0 ; i<mp.size() ; ++i )
-                folder.add( mp[i] );
-            writeObject( out , folder , indent );
+                writeGeometry( out , mp[i] , indent + 1 );
+            out << getIndent( indent ) << "</MultiGeometry>" << "\n";
         }
     };
 

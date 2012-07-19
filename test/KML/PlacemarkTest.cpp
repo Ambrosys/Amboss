@@ -49,7 +49,7 @@ TEST( KMLPlacemark , writePoint )
 {
     Placemark p( TestingPoint( 10.0 , 10.0 ) );
     ostringstream str;
-    writeObject( str , p , 0 );
+    writeFeature( str , p , 0 );
 
 	
     string cmp = 
@@ -68,7 +68,7 @@ TEST( KMLPlacemark , writePointAndName )
 {
     Placemark p( TestingPoint( 10.0 , 10.0 ) , "Huhu" );
     ostringstream str;
-    writeObject( str , p , 0 ); // other version of write
+    writeFeature( str , p , 0 ); // other version of write
 	
     string cmp = 
         "<Placemark>\n"
@@ -95,7 +95,7 @@ TEST( KMLPlacemark , setGeometry )
     Placemark p;
     p.geometry() = TestingPoint( 10.0 , 10.0 );
     ostringstream str;
-    writeObject( str , p , 0 );
+    writeFeature( str , p , 0 );
 	
     string cmp = 
         "<Placemark>\n"

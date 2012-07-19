@@ -18,52 +18,61 @@
 #include <boost/range/end.hpp>
 #include <boost/range/algorithm/for_each.hpp> 
 
-#include <Amboss/KML/Folder.h>
+#include <Amboss/KML/Feature.h>
+#include <Amboss/KML/Placemark.h>
+#include <Amboss/KML/WriterHelper.h>
 
 
 namespace Amboss {
 namespace KML {
 
-class Document : public Folder
+class Document 
 {
 public:
 
-    Document( void ) : Folder() { }
-    Document( const std::string &name ) : Folder( name ) { }
+    typedef std::vector< Feature > SequenceType;
+
+    Document( void ) : data_() , name_() { }
+    Document( const std::string &name ) : data_() , name_( name ) { }
+
+    template< class T >
+    void add( T t )
+    {
+        data_.push_back( Feature( t ) );
+    }
+
+    std::string& name( void ) { return name_; }
+    const std::string& name( void ) const { return name_; }
+
+    SequenceType& data( void ) { return data_; }
+    const SequenceType& data( void ) const { return data_; }
 
     void write( const std::string &filename )
     {
         std::ofstream fout( filename.c_str() );
         write( fout );
     }
-    void write( std::ostream &out );
 
-};
-
-
-template< >
-struct WriteObject< Document >
-{
-    inline static void write( std::ostream &out , const Document &doc , size_t indent )
+    void write( std::ostream &out )
     {
-	out << getIndent( indent ) << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
-	out << getIndent( indent ) << "<kml xmlns=\"http://www.opengis.net/kml/2.2\">" << "\n";
-	out << getIndent( indent ) << "<Document>" << "\n";
-        if( doc.name() != "" ) out << getIndent( indent +1 ) << "<name>" << doc.name() << "</name>" << "\n";
-	for( const auto &obj : doc.data() )
+	out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
+	out << "<kml xmlns=\"http://www.opengis.net/kml/2.2\">" << "\n";
+	out << "<Document>" << "\n";
+        if( name_ != "" ) out << getIndent( 1 ) << "<name>" << name_ << "</name>" << "\n";
+	for( const auto &obj : data_ )
 	{
-            obj.write( out , indent + 1 );
+            obj.write( out , 1 );
 	}
 	out << "</Document>" << "\n";
 	out << "</kml>" << "\n";
-
     }
-};
 
-void Document::write( std::ostream &out )
-{
-    writeObject( out , *this , 0 );
-}
+
+private:
+
+    SequenceType data_;
+    std::string name_;
+};
 
 
 

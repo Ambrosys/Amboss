@@ -47,7 +47,7 @@ int main( int argc , char **argv )
     mp.push_back( Point( 13.34 , 45.76 ) );
     mp.push_back( Point( 13.36 , 45.73 ) );
     mp.push_back( Point( 13.38 , 45.74 ) );
-    folder.add( mp );
+    folder.add( Placemark( mp , "Multipoint" ) );
 
     write( cout , folder , "Testing" );
     

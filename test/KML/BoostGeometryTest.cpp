@@ -35,7 +35,7 @@ typedef boost::geometry::model::multi_point< Point > MultiPoint;
 
 
 
-TEST( BoostGeometry , testWritePoint )
+TEST( KMLBoostGeometry , testWritePoint )
 {
     std::string cmpPoint =
         "<Point>\n"
@@ -45,12 +45,12 @@ TEST( BoostGeometry , testWritePoint )
         "</Point>\n";
 
     std::ostringstream str;
-    writeObject( str , Point( 10.0 , 10.0 ) , 0 );
+    writeGeometry( str , Point( 10.0 , 10.0 ) , 0 );
     EXPECT_EQ( cmpPoint , str.str() );
 }
 
 
-TEST( BoostGeometry , testWriteRing )
+TEST( KMLBoostGeometry , testWriteRing )
 {
     std::string cmpRing = 
         "<Polygon>\n"
@@ -70,11 +70,11 @@ TEST( BoostGeometry , testWriteRing )
     r.push_back( Point( 13.36 , 45.73 ) );
     r.push_back( Point( 13.38 , 45.74 ) );
     std::ostringstream str;
-    writeObject( str , r , 0 );
+    writeGeometry( str , r , 0 );
     EXPECT_EQ( cmpRing , str.str() );
 }
     
-TEST( BoostGeometry , testWriteBox )
+TEST( KMLBoostGeometry , testWriteBox )
 {
     std::string cmpBox = 
         "<Polygon>\n"
@@ -89,12 +89,12 @@ TEST( BoostGeometry , testWriteBox )
         "</Polygon>\n";
 
     std::ostringstream str;
-    writeObject( str , Box( Point( 13.33 , 45.13 ) , Point( 13.35 , 45.14 ) ) , 0 );
+    writeGeometry( str , Box( Point( 13.33 , 45.13 ) , Point( 13.35 , 45.14 ) ) , 0 );
     EXPECT_EQ( cmpBox , str.str() );
 }
 
    
-TEST( BoostGeometry , testWriteSegment )
+TEST( KMLBoostGeometry , testWriteSegment )
 {
     std::string cmpSegment =
         "<LineString>\n"
@@ -105,11 +105,11 @@ TEST( BoostGeometry , testWriteSegment )
         "</LineString>\n";
 
     std::ostringstream str;
-    writeObject( str , Segment( Point( 13.33 , 45.13 ) , Point( 13.35 , 45.14 ) ) , 0 );
+    writeGeometry( str , Segment( Point( 13.33 , 45.13 ) , Point( 13.35 , 45.14 ) ) , 0 );
     EXPECT_EQ( cmpSegment , str.str() );
 }
     
-TEST( BoostGeometry , testWriteLineString )
+TEST( KMLBoostGeometry , testWriteLineString )
 {
     std::string cmpLineString_ = 
         "<LineString>\n"
@@ -124,15 +124,15 @@ TEST( BoostGeometry , testWriteLineString )
     l.push_back( Point( 13.36 , 45.73 ) );
     l.push_back( Point( 13.38 , 45.74 ) );
     std::ostringstream str;
-    writeObject( str , l , 0 );
+    writeGeometry( str , l , 0 );
     EXPECT_EQ( cmpLineString_ , str.str() );
 }
     
    
-TEST( BoostGeometry , testWriteMultiPoint )
+TEST( KMLBoostGeometry , testWriteMultiPoint )
 {
     std::string cmpMultiPoint = 
-        "<Folder>\n"
+        "<MultiGeometry>\n"
         "  <Point>\n"
         "    <coordinates>\n"
         "      13.34,45.76,0 \n"
@@ -148,14 +148,14 @@ TEST( BoostGeometry , testWriteMultiPoint )
         "      13.38,45.74,0 \n"
         "    </coordinates>\n"
         "  </Point>\n"
-        "</Folder>\n";
+        "</MultiGeometry>\n";
 
     MultiPoint mp;
     mp.push_back( Point( 13.34 , 45.76 ) );
     mp.push_back( Point( 13.36 , 45.73 ) );
     mp.push_back( Point( 13.38 , 45.74 ) );
     std::ostringstream str;
-    writeObject( str , mp , 0 );
+    writeGeometry( str , mp , 0 );
     EXPECT_EQ( cmpMultiPoint , str.str() );
 }
     

@@ -1,5 +1,5 @@
 /*
- * WriteableTest.cpp
+ * GeometryTest.cpp
  *
  *  Created on: 19.06.2012
  *      Author: karsten
@@ -17,42 +17,42 @@ using namespace std;
 using namespace Amboss::KML;
 
 
-TEST( KMLWriteable , defaultConstruction )
+TEST( KMLGeometry , defaultConstruction )
 {
-    Writeable e;
+    Geometry e;
 }
 
-TEST( KMLWriteable , valueConstruction )
+TEST( KMLGeometry , valueConstruction )
 {
     TestingPoint p;
-    Writeable e( p );
+    Geometry e( p );
 }
 
-TEST( KMLWriteable , copyConstruction )
+TEST( KMLGeometry , copyConstruction )
 {
-    Writeable e1;
-    Writeable e2( e1 );
+    Geometry e1;
+    Geometry e2( e1 );
 
     TestingPoint p;
-    Writeable e3( p );
-    Writeable e4( e3 );
+    Geometry e3( p );
+    Geometry e4( e3 );
 }
 
-TEST( KMLWriteable , copying )
+TEST( KMLGeometry , copying )
 {
-    Writeable e1;
-    Writeable e2;
+    Geometry e1;
+    Geometry e2;
     e2 = e1;
 
     TestingPoint p1 , p2;
-    Writeable e3( p1 );
-    Writeable e4( p2 );
+    Geometry e3( p1 );
+    Geometry e4( p2 );
     e3 = e4;
 }
 
-TEST( KMLWriteable , oneTestingPoint )
+TEST( KMLGeometry , oneTestingPoint )
 {
-    Writeable e( TestingPoint( 10.0 , 10.0 ) );
+    Geometry e( TestingPoint( 10.0 , 10.0 ) );
     ostringstream str;
     e.write( str , 0 );
 	
@@ -66,10 +66,10 @@ TEST( KMLWriteable , oneTestingPoint )
     EXPECT_EQ( cmp , str.str() );
 }
 
-TEST( KMLWriteable , twoTestingPoint )
+TEST( KMLGeometry , twoTestingPoint )
 {
-    Writeable e1( TestingPoint( 10.0 , 10.0 ) );
-    Writeable e2( TestingPoint( 5.0 , 5.0 ) );
+    Geometry e1( TestingPoint( 10.0 , 10.0 ) );
+    Geometry e2( TestingPoint( 5.0 , 5.0 ) );
     e2 = e1;
     ostringstream str;
     e2.write( str , 0 );
