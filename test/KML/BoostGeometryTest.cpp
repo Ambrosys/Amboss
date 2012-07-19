@@ -129,38 +129,33 @@ TEST( BoostGeometry , testWriteLineString )
 }
     
    
-// TEST( BoostGeometry , testWriteMultiPoint )
-// {
-//     cmpMultiPoint_ = 
-//         "<Placemark>\n"
-//         "  <Point>\n"
-//         "    <coordinates>\n"
-//         "      13.34,45.76,0 \n"
-//         "    </coordinates>\n"
-//         "  </Point>\n"
-//         "</Placemark>\n"
-//         "<Placemark>\n"
-//         "  <Point>\n"
-//         "    <coordinates>\n"
-//         "      13.36,45.73,0 \n"
-//         "    </coordinates>\n"
-//         "  </Point>\n"
-//         "</Placemark>\n"
-//         "<Placemark>\n"
-//         "    <Point>\n"
-//         "      <coordinates>\n"
-//         "        13.38,45.74,0 \n"
-//         "      </coordinates>\n"
-//         "    </Point>\n"
-//         "  </Placemark>\n"
-//         "</Folder>\n";
+TEST( BoostGeometry , testWriteMultiPoint )
+{
+    std::string cmpMultiPoint = 
+        "<Folder>\n"
+        "  <Point>\n"
+        "    <coordinates>\n"
+        "      13.34,45.76,0 \n"
+        "    </coordinates>\n"
+        "  </Point>\n"
+        "  <Point>\n"
+        "    <coordinates>\n"
+        "      13.36,45.73,0 \n"
+        "    </coordinates>\n"
+        "  </Point>\n"
+        "  <Point>\n"
+        "    <coordinates>\n"
+        "      13.38,45.74,0 \n"
+        "    </coordinates>\n"
+        "  </Point>\n"
+        "</Folder>\n";
 
-//     MultiPoint mp;
-//     mp.push_back( Point( 13.34 , 45.76 ) );
-//     mp.push_back( Point( 13.36 , 45.73 ) );
-//     mp.push_back( Point( 13.38 , 45.74 ) );
-//     std::ostringstream str;
-//     writeObject( str , mp , 0 , "" );
-//     EXPECT_EQ( cmpMultiPoint_ , str.str() );
-// }
+    MultiPoint mp;
+    mp.push_back( Point( 13.34 , 45.76 ) );
+    mp.push_back( Point( 13.36 , 45.73 ) );
+    mp.push_back( Point( 13.38 , 45.74 ) );
+    std::ostringstream str;
+    writeObject( str , mp , 0 );
+    EXPECT_EQ( cmpMultiPoint , str.str() );
+}
     
