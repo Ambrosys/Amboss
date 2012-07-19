@@ -26,4 +26,4 @@ include_directories ( ${Boost_INCLUDE_DIRS} )
 
 add_subdirectory (test/KML)
 
-# add_subdirectory (examples/KML) 
+add_subdirectory (examples/KML) 
