@@ -10,6 +10,10 @@ set(CMAKE_MODULE_PATH
 
 find_package (Boost REQUIRED)
 
+add_subdirectory (gtest)
+enable_testing(true)
+
+
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "-std=c++0x")        ## Optimize
@@ -19,6 +23,7 @@ include_directories ( ${AMBOSS_SOURCE_DIR}/include )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 
+
 add_subdirectory (test/KML)
 
-add_subdirectory (examples/KML) 
+# add_subdirectory (examples/KML) 
