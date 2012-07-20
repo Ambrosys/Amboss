@@ -62,7 +62,7 @@ private:
 };
 
 template< class T >
-void write( std::ostream &out , T t , const std::string& name = "" )
+void write( std::ostream &out , const T &t , const std::string& name = "" )
 {
     Writer writer;
     writer.add( t , name );
@@ -71,10 +71,10 @@ void write( std::ostream &out , T t , const std::string& name = "" )
 
 
 template< class T >
-void write( const std::string &filename , T t , const std::string& name = "" )
+void write( const std::string &filename , const T &t , const std::string& name = "" )
 {
     std::ofstream fout( filename.c_str() );
-    write( t , fout , name );
+    write( fout , t , name );
 }
 
 namespace Detail {
@@ -83,7 +83,7 @@ namespace Detail {
     {
         Writer &writer_;
         AddToWriter( Writer &writer ) : writer_( writer ) { }
-        template< class T > void operator()( T t ) { writer_.add( t ); }
+        template< class T > void operator()( const T &t ) { writer_.add( t ); }
     };
 }
 
