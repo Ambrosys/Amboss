@@ -1,4 +1,4 @@
-Amboss
+KML
 ======
 
-Amboss is **Amb**rosys **O**pen-**S**ource-**S**oftware Library. It is released under the Boost license.
+Writes KML documents. The design is based on type erasure. More informations coming soon...
