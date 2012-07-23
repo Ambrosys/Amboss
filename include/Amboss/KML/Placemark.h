@@ -15,23 +15,20 @@
 #include <Amboss/KML/Feature.h>
 #include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/WriterHelper.h>
-
+#include <Amboss/KML/ElementWithName.h>
 
 
 namespace Amboss {
 namespace KML {
 
 
-class Placemark
+class Placemark : public ElementWithName
 {
 public:
 
-    Placemark( void ) : geom_() , name_( "" ) { }
-    Placemark( const Geometry &geom ) : geom_( geom ) , name_( "" ) { }
-    Placemark( const Geometry &geom , const std::string &name ) : geom_( geom ) , name_( name ) { }
-
-    std::string& name( void ) { return name_; }
-    const std::string& name( void ) const { return name_; }
+    Placemark( void ) : ElementWithName() , geom_()  { }
+    Placemark( const Geometry &geom ) : ElementWithName() , geom_( geom ) { }
+    Placemark( const Geometry &geom , const std::string &name ) : ElementWithName( name ) , geom_( geom ) { }
 
     Geometry& geometry( void ) { return geom_; }
     const Geometry& geometry( void ) const { return geom_; }
@@ -39,7 +36,6 @@ public:
 private:
 
     Geometry geom_;
-    std::string name_;
 };
 
 template<>
@@ -48,10 +44,7 @@ struct WriteFeature< Placemark >
     static inline void write( std::ostream &out , const Placemark &p , size_t indent )
     {
         out << getIndent( indent ) << "<Placemark>" << "\n";
-        if( p.name() != "" )
-        {
-            out << getIndent( indent + 1 ) << "<name>" << p.name() << "</name>" << "\n";
-        }
+        p.writeName( out , indent + 1 );
         p.geometry().write( out , indent + 1 );
         out << getIndent( indent ) << "</Placemark>" << "\n";
     }

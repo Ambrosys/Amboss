@@ -16,18 +16,19 @@
 #include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
+#include <Amboss/KML/ElementWithName.h>
 
 namespace Amboss {
 namespace KML {
 
-class Folder
+class Folder : public ElementWithName
 {
 public:
 
     typedef std::vector< Feature > SequenceType;
 
-    Folder( void ) : data_() , name_( "" ) { }
-    Folder( const std::string &name ) : data_() , name_( name ) { }
+    Folder( void ) : ElementWithName() , data_() { }
+    Folder( const std::string &name ) : ElementWithName( name ) , data_() { }
 
     template< class T >
     void add( T t )
@@ -35,16 +36,12 @@ public:
         data_.push_back( Feature( t ) );
     }
 
-    std::string& name( void ) { return name_; }
-    const std::string& name( void ) const { return name_; }
-
     SequenceType& data( void ) { return data_; }
     const SequenceType& data( void ) const { return data_; }
 
 private:
 
     SequenceType data_;
-    std::string name_;
 };
 
 template<>
@@ -53,7 +50,7 @@ struct WriteFeature< Folder >
     static void write( std::ostream &out , const Folder &data , size_t indent  )
     {
         out << getIndent( indent ) << "<Folder>" << "\n";
-        if( data.name() != "" ) out << getIndent( indent + 1 ) << "<name>" << data.name() << "</name>" << "\n";
+        data.writeName( out , indent + 1 );
         for( auto e : data.data() )
         {
             e.write( out , indent + 1 );

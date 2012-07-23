@@ -19,6 +19,7 @@
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/Folder.h>
 #include <Amboss/KML/Document.h>
+#include <Amboss/KML/Style.h>
 #include <Amboss/KML/WriterHelper.h>
 #include <Amboss/KML/BoostGeometry.h>
 

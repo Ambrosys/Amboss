@@ -39,7 +39,6 @@ public:
 
     Geometry( const Geometry &e ) : object_( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) { }
 
-    ~Geometry( void ) { }
 
     const Geometry& operator=( const Geometry &e ) {
         object_.reset( ( e.object_ != nullptr ) ? e.object_->copy() : nullptr ) ;

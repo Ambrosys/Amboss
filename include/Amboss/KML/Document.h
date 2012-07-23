@@ -21,28 +21,25 @@
 #include <Amboss/KML/Feature.h>
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
-
+#include <Amboss/KML/ElementWithName.h>
 
 namespace Amboss {
 namespace KML {
 
-class Document 
+class Document : public ElementWithName
 {
 public:
 
     typedef std::vector< Feature > SequenceType;
 
-    Document( void ) : data_() , name_() { }
-    Document( const std::string &name ) : data_() , name_( name ) { }
+    Document( void ) : ElementWithName() , data_() { }
+    Document( const std::string &name ) : ElementWithName( name ) , data_() { }
 
     template< class T >
     void add( T t )
     {
         data_.push_back( Feature( t ) );
     }
-
-    std::string& name( void ) { return name_; }
-    const std::string& name( void ) const { return name_; }
 
     SequenceType& data( void ) { return data_; }
     const SequenceType& data( void ) const { return data_; }
@@ -58,7 +55,7 @@ public:
 	out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << "\n";
 	out << "<kml xmlns=\"http://www.opengis.net/kml/2.2\">" << "\n";
 	out << "<Document>" << "\n";
-        if( name_ != "" ) out << getIndent( 1 ) << "<name>" << name_ << "</name>" << "\n";
+        writeName( out , 1 );
 	for( const auto &obj : data_ )
 	{
             obj.write( out , 1 );
@@ -71,7 +68,6 @@ public:
 private:
 
     SequenceType data_;
-    std::string name_;
 };
 
 
