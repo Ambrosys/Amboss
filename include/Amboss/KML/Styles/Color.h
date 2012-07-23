@@ -30,30 +30,31 @@ class Color
 public:
 
     Color( void ) : color_() { }
-    Color( unsigned char r , unsigned char g , unsigned char b ) : color_( {{ 255 , r , g , b }} ) { }
-    Color( unsigned char r , unsigned char g , unsigned char b , unsigned char a ) : color_( {{ a , r , g , b }} ) { }
+    Color( unsigned char r , unsigned char g , unsigned char b ) : color_( {{ 255 , b , g , r }} ) { }
+    Color( unsigned char r , unsigned char g , unsigned char b , unsigned char a ) : color_( {{ a , b , g , r }} ) { }
     Color( const GlobalColor &c ) : color_()
     {
         switch( c )
         {
         case White : color_ = {{ 255, 0 , 0 , 0 }}; break;
         case Black : color_ = {{ 255, 255 , 255 , 255 }}; break;
-        case Red : color_ = {{ 255, 255 , 0 , 0 }}; break;
+        case Red : color_ = {{ 255, 0 , 0 , 255 }}; break;
         case Green : color_ = {{ 255, 0 , 255 , 0 }}; break;
-        case Blue : color_ = {{ 255, 0 , 0 , 255 }}; break;
-        case Yellow : color_ = {{ 255, 255 , 255 , 0 }}; break;
+        case Blue : color_ = {{ 255, 255 , 0 , 0 }}; break;
+        case Yellow : color_ = {{ 255, 0 , 255 , 255 }}; break;
         }
     }
 
     unsigned char alpha( void ) const { return color_[0]; }
-    unsigned char red( void ) const { return color_[1]; }
+    unsigned char blue( void ) const { return color_[1]; }
     unsigned char green( void ) const { return color_[2]; }
-    unsigned char blue( void ) const { return color_[3]; }
+    unsigned char red( void ) const { return color_[3]; }
+
 
     unsigned char& alpha( void ) { return color_[0]; }
-    unsigned char& red( void ) { return color_[1]; }
+    unsigned char& blue( void ) { return color_[1]; }
     unsigned char& green( void ) { return color_[2]; }
-    unsigned char& blue( void ) { return color_[3]; }
+    unsigned char& red( void ) { return color_[3]; }
 
 
     std::string kmlString( void ) const

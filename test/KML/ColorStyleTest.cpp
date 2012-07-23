@@ -33,7 +33,7 @@ TEST( KMLColorStyle , testWrite1 )
     std::ostringstream str;
     cs.write( str , 0 );
     std::string cmp =
-        "<color>ffff0000</color>\n"
+        "<color>ff0000ff</color>\n"
         "<colorMode>normal</colorMode>\n";
     EXPECT_EQ( str.str() , cmp );
 }
@@ -44,7 +44,7 @@ TEST( KMLColorStyle , testWrite2 )
     std::ostringstream str;
     cs.write( str , 0 );
     std::string cmp =
-        "<color>ff0000ff</color>\n"
+        "<color>ffff0000</color>\n"
         "<colorMode>random</colorMode>\n";
     EXPECT_EQ( str.str() , cmp );
 }

@@ -90,10 +90,11 @@ Folder makeFolder( Iter first , Iter last , const std::string &name = std::strin
 
 template< class Iter >
 Folder makeFolderFromGeometry( Iter first , Iter last , const std::string &foldername = std::string( "" ) ,
-                               const std::string placemarkname = std::string( "" ) )
+                               const std::string &placemarkname = std::string( "" ) ,
+                               const std::string &styleUrl = std::string( "" ) )
 {
     Folder f( foldername );
-    while( first != last ) f.add( Placemark( *first++ , placemarkname ) );
+    while( first != last ) f.add( Placemark( *first++ , placemarkname , styleUrl ) );
     return f;
 }
 
@@ -106,9 +107,10 @@ Folder makeFolderFromRange( const R &r , const std::string &name = std::string( 
 
 template< class R >
 Folder makeFolderFromGeometryRange( const R &r , const std::string &foldername = std::string( "" ) ,
-                                     const std::string &placemarkname = std::string( "" ) )
+                                    const std::string &placemarkname = std::string( "" ) ,
+                                    const std::string &styleUrl = std::string( "" ) )
 {
-    return makeFolderFromGeometry( boost::const_begin( r ) , boost::const_end( r ) , foldername , placemarkname );
+    return makeFolderFromGeometry( boost::const_begin( r ) , boost::const_end( r ) , foldername , placemarkname , styleUrl );
 }
 
 

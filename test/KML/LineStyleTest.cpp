@@ -66,7 +66,7 @@ TEST( KMLLineStyle , testWrite1 )
     ls.write( str , 0 );
     std::string cmp =
         "<LineStyle>\n"
-        "  <color>ffffff00</color>\n"
+        "  <color>ff00ffff</color>\n"
         "  <colorMode>normal</colorMode>\n"
         "  <width>2.2</width>\n"
         "</LineStyle>\n";
@@ -80,7 +80,7 @@ TEST( KMLLineStyle , testWrite2 )
     ls.write( str , 1 );
     std::string cmp =
         "  <LineStyle>\n"
-        "    <color>ffffff00</color>\n"
+        "    <color>ff00ffff</color>\n"
         "    <colorMode>normal</colorMode>\n"
         "    <width>2.2</width>\n"
         "  </LineStyle>\n";

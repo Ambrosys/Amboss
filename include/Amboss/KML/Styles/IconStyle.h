@@ -32,6 +32,7 @@ inline std::string getDefaultIconUrl( DefaultIcons icon )
     case ShadedDot : return "http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png"; break;
     case Paddle : return "http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"; break;
     case PushPin : return "http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png"; break;
+    default : return ""; break;
     }
 };
 

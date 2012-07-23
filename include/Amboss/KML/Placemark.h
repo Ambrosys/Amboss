@@ -30,12 +30,19 @@ public:
 
     Placemark( void )
         : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , geom_()  { }
+
     Placemark( const Geometry &geom )
         : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , geom_( geom ) { }
+
     Placemark( const Geometry &geom , const std::string &name )
         : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle() , geom_( geom ) { }
+
+    Placemark( const Geometry &geom , const std::string &name , const std::string& styleUrl )
+        : ElementWithName( name ) , ElementWithStyleUrl( styleUrl ) , ElementWithStyle() , geom_( geom ) { }
+
     Placemark( const Geometry &geom , const Style &style )
         : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle( style ) , geom_( geom ) { }
+
     Placemark( const Geometry &geom , const Style &style , const std::string &name )
         : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle( style ) , geom_( geom ) { }
 
@@ -59,7 +66,6 @@ struct WriteFeature< Placemark >
         p.geometry().write( out , indent + 1 );
         out << getIndent( indent ) << "</Placemark>" << "\n";
     }
-
 };
 
 

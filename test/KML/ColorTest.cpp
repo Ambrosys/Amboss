@@ -98,7 +98,7 @@ TEST( KMLColor , testWrite )
     EXPECT_EQ( c.kmlString() , "ffffffff" );
 
     Color c2( 0x23 , 0xf6 , 0x08 , 0x12 );
-    EXPECT_EQ( c2.kmlString() , "1223f608" );
+    EXPECT_EQ( c2.kmlString() , "1208f623" );
 }
 
 TEST( KMLColor , testEq )

@@ -125,7 +125,7 @@ TEST( KMLPlacemark , writePointAndNameAndStyleUrl )
     string cmp = 
         "<Placemark>\n"
         "  <name>Placemark</name>\n"
-        "  <StyleUrl>link</StyleUrl>\n"
+        "  <styleUrl>link</styleUrl>\n"
         "  <Point>\n"
         "    <coordinates>\n"
         "      10,10,0 \n"

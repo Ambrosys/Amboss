@@ -48,9 +48,9 @@ TEST( KMLElementWithStyleUrl , testWrite )
     ElementWithStyleUrl s1( "Url" );
     ostringstream str;
     s1.writeStyleUrl( str , 0 );
-    EXPECT_EQ( str.str() , "<StyleUrl>Url</StyleUrl>\n" );
+    EXPECT_EQ( str.str() , "<styleUrl>Url</styleUrl>\n" );
 
     ostringstream str2;
     s1.writeStyleUrl( str2 , 1 );
-    EXPECT_EQ( str2.str() , "  <StyleUrl>Url</StyleUrl>\n" );
+    EXPECT_EQ( str2.str() , "  <styleUrl>Url</styleUrl>\n" );
 }

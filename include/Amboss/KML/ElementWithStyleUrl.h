@@ -38,7 +38,7 @@ public:
         for( size_t i=0 ; i<urls_.size() ; ++i )
         {
             if( urls_[i] != "" )
-                out << getIndent( indent ) << "<StyleUrl>" << urls_[i] << "</StyleUrl>" << "\n";
+                out << getIndent( indent ) << "<styleUrl>" << urls_[i] << "</styleUrl>" << "\n";
         }
     }
 
