@@ -23,10 +23,11 @@ using namespace Amboss::KML;
 TEST( KMLElementWithStyleUrl , testConstruction )
 {
     ElementWithStyleUrl s1;
-    EXPECT_EQ( s1.url() , "" );
+    EXPECT_EQ( s1.urls().size() , 0 );
 
     ElementWithStyleUrl s2( "Url" );
-    EXPECT_EQ( s2.url() , "Url" );
+    EXPECT_EQ( s2.urls().size() , 1 );
+    EXPECT_EQ( s2.urls().front() , "Url" );
 }
 
 
@@ -34,11 +35,11 @@ TEST( KMLElementWithStyleUrl , testEmptyWrite )
 {
     ElementWithStyleUrl s1;
     ostringstream str;
-    s1.write( str , 0 );
+    s1.writeStyleUrl( str , 0 );
     EXPECT_EQ( str.str() , "" );
 
     ostringstream str2;
-    s1.write( str2 , 1 );
+    s1.writeStyleUrl( str2 , 1 );
     EXPECT_EQ( str2.str() , "" );
 }
 
@@ -46,10 +47,10 @@ TEST( KMLElementWithStyleUrl , testWrite )
 {
     ElementWithStyleUrl s1( "Url" );
     ostringstream str;
-    s1.write( str , 0 );
+    s1.writeStyleUrl( str , 0 );
     EXPECT_EQ( str.str() , "<StyleUrl>Url</StyleUrl>\n" );
 
     ostringstream str2;
-    s1.write( str2 , 1 );
+    s1.writeStyleUrl( str2 , 1 );
     EXPECT_EQ( str2.str() , "  <StyleUrl>Url</StyleUrl>\n" );
 }

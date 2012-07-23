@@ -17,18 +17,26 @@
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
 #include <Amboss/KML/ElementWithName.h>
+#include <Amboss/KML/ElementWithStyleUrl.h>
+#include <Amboss/KML/ElementWithStyle.h>
 
 namespace Amboss {
 namespace KML {
 
-class Folder : public ElementWithName
+class Folder : public ElementWithName , public ElementWithStyleUrl , public ElementWithStyle
 {
 public:
 
     typedef std::vector< Feature > SequenceType;
 
-    Folder( void ) : ElementWithName() , data_() { }
-    Folder( const std::string &name ) : ElementWithName( name ) , data_() { }
+    Folder( void )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , data_() { }
+    Folder( const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle() , data_() { }
+    Folder( const Style &style )
+        : ElementWithName( "" ) , ElementWithStyleUrl() , ElementWithStyle( style ) , data_() { }
+    Folder( const Style &style , const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle( style ) , data_() { }
 
     template< class T >
     void add( T t )
@@ -51,6 +59,8 @@ struct WriteFeature< Folder >
     {
         out << getIndent( indent ) << "<Folder>" << "\n";
         data.writeName( out , indent + 1 );
+        data.writeStyleUrl( out , indent + 1 );
+        data.writeStyle( out , indent + 1 );
         for( auto e : data.data() )
         {
             e.write( out , indent + 1 );

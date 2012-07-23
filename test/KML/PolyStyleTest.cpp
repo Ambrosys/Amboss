@@ -103,3 +103,20 @@ TEST( KMLPolyStyle , testWrite2 )
     EXPECT_EQ( str.str() , cmp );
 }
 
+TEST( KMLPolyStyle , testEq )
+{
+    PolyStyle is1;
+    PolyStyle is2;
+    EXPECT_EQ( is1 , is2 );
+
+    PolyStyle is3( White , true , false );
+    PolyStyle is4( White , true , false );
+    EXPECT_EQ( is3 , is4 );
+    is4.reset();
+    EXPECT_NE( is3 , is4 );
+    is4.fill() = false ;
+    EXPECT_NE( is3 , is4 );
+
+    PolyStyle is5 = is3;
+    EXPECT_EQ( is3 , is5 );
+}

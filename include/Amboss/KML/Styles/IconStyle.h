@@ -45,9 +45,14 @@ class IconStyle
 public:
 
     IconStyle( void ) : isSet_( false ) , colorStyle_() , scale_( 1.0 ) , iconRef_() { }
-    IconStyle( const ColorStyle colorStyle , double scale , const std::string &iconRef )
+
+    IconStyle( const ColorStyle &colorStyle )
+        : isSet_( true ) , colorStyle_( colorStyle ) , scale_( 1.0 ) , iconRef_() { }
+
+    IconStyle( const ColorStyle &colorStyle , double scale , const std::string &iconRef )
         : isSet_( true ) , colorStyle_( colorStyle ) , scale_( scale ) , iconRef_( iconRef ) { }
-    IconStyle( const ColorStyle colorStyle , double scale , DefaultIcons icon )
+
+    IconStyle( const ColorStyle &colorStyle , double scale , DefaultIcons icon )
         : isSet_( true ) , colorStyle_( colorStyle ) , scale_( scale ) , iconRef_( getDefaultIconUrl( icon ) ) { }
 
 
@@ -89,8 +94,22 @@ private:
     ColorStyle colorStyle_;
     double scale_;
     std::string iconRef_;
-
 };
+
+inline bool operator==( const IconStyle &s1 , const IconStyle &s2 )
+{
+    return (
+        ( bool( s1 ) == bool( s2 ) ) &&
+        ( s1.colorStyle() == s2.colorStyle() ) &&
+        ( s1.scale() == s2.scale() ) &&
+        ( s1.iconRef() == s2.iconRef() ) 
+        );
+}
+
+inline bool operator!=( const IconStyle &s1 , const IconStyle &s2 )
+{
+    return !( s1 == s2 );
+}
 
 
 

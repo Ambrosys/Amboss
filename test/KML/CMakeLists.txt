@@ -3,14 +3,16 @@ include_directories ( ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} )
 
 
 add_executable ( TestMain
-  ElementWithNameTest.cpp
-  ElementWithStyleUrlTest.cpp
   ColorTest.cpp
   ColorStyleTest.cpp
   IconStyleTest.cpp
   LineStyleTest.cpp
   PolyStyleTest.cpp
   LabelStyleTest.cpp
+  StyleTest.cpp
+  ElementWithNameTest.cpp
+  ElementWithStyleUrlTest.cpp
+  ElementWithStyleTest.cpp
   GeometryTest.cpp
   PlacemarkTest.cpp
   FolderTest.cpp

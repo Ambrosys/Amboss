@@ -72,9 +72,22 @@ private:
     // double outerWidth_;
     // double physicalWidth_;
     // bool labelVisibility_;
-    
-
 };
+
+
+inline bool operator==( const LineStyle &s1 , const LineStyle &s2 )
+{
+    return (
+        ( bool( s1 ) == bool( s2 ) ) &&
+        ( s1.colorStyle() == s2.colorStyle() ) &&
+        ( s1.width() == s2.width() )
+        );
+}
+
+inline bool operator!=( const LineStyle &s1 , const LineStyle &s2 )
+{
+    return !( s1 == s2 );
+}
 
 
 

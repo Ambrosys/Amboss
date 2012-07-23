@@ -30,10 +30,29 @@ class Style
 {
 public:
 
+    Style( void ) 
+        : id_( "" ) ,
+          iconStyle_() , lineStyle_() , polyStyle_() , labelStyle_()
+    { }
+
+    Style( const std::string &id ,
+           const IconStyle &is = IconStyle() , const LineStyle &ls = LineStyle() ,
+           const PolyStyle &ps = PolyStyle() , const LabelStyle &las = LabelStyle() )
+        : id_( id ) ,
+          iconStyle_( is ) , lineStyle_( ls ) , polyStyle_( ps ) , labelStyle_( las )
+    { }
+
+    Style( const IconStyle &is , const LineStyle &ls = LineStyle() ,
+           const PolyStyle &ps = PolyStyle() , const LabelStyle &las = LabelStyle() )
+        : id_( "" ) ,
+          iconStyle_( is ) , lineStyle_( ls ) , polyStyle_( ps ) , labelStyle_( las )
+    { }
+
+
 
     explicit operator bool( void ) const
     {
-        return iconStyle_ || lineStyle_ || polyStyle_ || labelStyle_ ;
+        return ( id_ != "" ) || bool( iconStyle_ ) || bool( lineStyle_ ) || bool( polyStyle_ ) || bool( labelStyle_ ) ;
 //        return iconStyle_ || lineStyle_ || polyStyle_ || labelStyle_ || ballonStyle_ || listStyle_ ;
     }
 
@@ -42,7 +61,10 @@ public:
     {
         if( *this )
         {
-            out << getIndent( indent ) << "<Style>" << "\n";
+            if( id_ == "" )
+                out << getIndent( indent ) << "<Style>" << "\n";
+            else
+                out << getIndent( indent ) << "<Style id=\"" << id_ << "\">" << "\n";
             iconStyle_.write( out , indent + 1 );
             lineStyle_.write( out , indent + 1 );
             polyStyle_.write( out , indent + 1 );
@@ -52,6 +74,10 @@ public:
             out << getIndent( indent ) << "</Style>" << "\n";
         }
     }
+
+    const std::string& id( void ) const { return id_; }
+    std::string& id( void ) { return id_; }
+
 
     const IconStyle& iconStyle( void ) const { return iconStyle_; }
     IconStyle& iconStyle( void ) { return iconStyle_; }
@@ -74,6 +100,7 @@ public:
  
 private:
 
+    std::string id_;
     IconStyle iconStyle_;
     LineStyle lineStyle_;
     PolyStyle polyStyle_;
@@ -83,7 +110,20 @@ private:
 };
 
 
+inline bool operator==( const Style &s1 , const Style &s2 )
+{
+    return
+        ( s1.id() == s2.id() ) &&
+        ( s1.iconStyle() == s2.iconStyle() ) &&
+        ( s1.lineStyle() == s2.lineStyle() ) &&
+        ( s1.polyStyle() == s2.polyStyle() ) &&
+        ( s1.labelStyle() == s2.labelStyle() );
+}
 
+inline bool operator!=( const Style &s1 , const Style &s2 )
+{
+    return !( s1 == s2 );
+}
 
 
 } // namespace KML

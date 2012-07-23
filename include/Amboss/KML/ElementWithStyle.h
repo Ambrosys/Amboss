@@ -12,8 +12,10 @@
 #ifndef AMBOSS_ELEMENTWITHSTYLE_H_INCLUDED
 #define AMBOSS_ELEMENTWITHSTYLE_H_INCLUDED
 
-#include <Amboss/KML/WriterHelper.h>
+#include <vector>
 
+#include <Amboss/KML/WriterHelper.h>
+#include <Amboss/KML/Style.h>
 
 namespace Amboss {
 namespace KML {
@@ -23,11 +25,23 @@ class ElementWithStyle
 {
 public:
 
-    ElementWithStyle( void );
+    typedef std::vector< Style > StyleSequence;
+
+    ElementWithStyle(  void ) : styles_() { }
+    ElementWithStyle( const Style &style ) : styles_( 1 , style ) { }
+
+    const StyleSequence& styles( void ) const { return styles_; }
+    StyleSequence& styles( void ) { return styles_; }
+
+    void writeStyle( std::ostream &out , size_t indent ) const
+    {
+        for( size_t i=0 ; i<styles_.size() ; ++i )
+            styles_[i].write( out , indent );
+    }
 
 private:
 
-    
+    StyleSequence styles_;
 };
 
 

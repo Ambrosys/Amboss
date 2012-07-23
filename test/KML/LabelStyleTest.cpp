@@ -88,3 +88,20 @@ TEST( KMLLabelStyle , testWrite2 )
     EXPECT_EQ( str.str() , cmp );
 }
 
+TEST( KMLLabelStyle , testEq )
+{
+    LabelStyle is1;
+    LabelStyle is2;
+    EXPECT_EQ( is1 , is2 );
+
+    LabelStyle is3( White , 4.0 );
+    LabelStyle is4( White , 4.0 );
+    EXPECT_EQ( is3 , is4 );
+    is4.reset();
+    EXPECT_NE( is3 , is4 );
+    is4.scale() = 3.0;
+    EXPECT_NE( is3 , is4 );
+
+    LabelStyle is5 = is3;
+    EXPECT_EQ( is3 , is5 );
+}

@@ -35,7 +35,7 @@ TEST( KMLLineStyle , testSetColor )
     EXPECT_EQ( ls.colorStyle() , ColorStyle( Blue , ColorStyle::normal ) );
 }
 
-TEST( KMLineStyle , testSetWidth )
+TEST( KMLLineStyle , testSetWidth )
 {
     LineStyle ls;
     ls.width() = 2.4;
@@ -88,5 +88,20 @@ TEST( KMLLineStyle , testWrite2 )
 }
 
 
+TEST( KMLLineStyle , testEq )
+{
+    LineStyle is1;
+    LineStyle is2;
+    EXPECT_EQ( is1 , is2 );
 
+    LineStyle is3( White , 4.0 );
+    LineStyle is4( White , 4.0 );
+    EXPECT_EQ( is3 , is4 );
+    is4.reset();
+    EXPECT_NE( is3 , is4 );
+    is4.width() = 5.0;
+    EXPECT_NE( is3 , is4 );
 
+    LineStyle is5 = is3;
+    EXPECT_EQ( is3 , is5 );
+}

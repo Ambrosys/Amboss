@@ -103,3 +103,22 @@ TEST( KMLIconStyle , testWrite2 )
         "  </IconStyle>\n";
     EXPECT_EQ( str.str() , cmp );
 }
+
+
+TEST( KMLIconStyle , testEq )
+{
+    IconStyle is1;
+    IconStyle is2;
+    EXPECT_EQ( is1 , is2 );
+
+    IconStyle is3( White , 4.0 , PushPin );
+    IconStyle is4( White , 4.0 , PushPin );
+    EXPECT_EQ( is3 , is4 );
+    is4.reset();
+    EXPECT_NE( is3 , is4 );
+    is4.setIconRef( Paddle );
+    EXPECT_NE( is3 , is4 );
+
+    IconStyle is5 = is3;
+    EXPECT_EQ( is3 , is5 );
+}

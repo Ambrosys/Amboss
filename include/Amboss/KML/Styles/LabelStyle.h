@@ -71,6 +71,19 @@ private:
     double scale_;
 };
 
+inline bool operator==( const LabelStyle &s1 , const LabelStyle &s2 )
+{
+    return (
+        ( bool( s1 ) == bool( s2 ) ) &&
+        ( s1.colorStyle() == s2.colorStyle() ) &&
+        ( s1.scale() == s2.scale() )
+        );
+}
+
+inline bool operator!=( const LabelStyle &s1 , const LabelStyle &s2 )
+{
+    return !( s1 == s2 );
+}
 
 
 } // namespace KML

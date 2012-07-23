@@ -16,19 +16,28 @@
 #include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/WriterHelper.h>
 #include <Amboss/KML/ElementWithName.h>
+#include <Amboss/KML/ElementWithStyleUrl.h>
+#include <Amboss/KML/ElementWithStyle.h>
 
 
 namespace Amboss {
 namespace KML {
 
 
-class Placemark : public ElementWithName
+class Placemark : public ElementWithName , public ElementWithStyleUrl , public ElementWithStyle
 {
 public:
 
-    Placemark( void ) : ElementWithName() , geom_()  { }
-    Placemark( const Geometry &geom ) : ElementWithName() , geom_( geom ) { }
-    Placemark( const Geometry &geom , const std::string &name ) : ElementWithName( name ) , geom_( geom ) { }
+    Placemark( void )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , geom_()  { }
+    Placemark( const Geometry &geom )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , geom_( geom ) { }
+    Placemark( const Geometry &geom , const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle() , geom_( geom ) { }
+    Placemark( const Geometry &geom , const Style &style )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle( style ) , geom_( geom ) { }
+    Placemark( const Geometry &geom , const Style &style , const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle( style ) , geom_( geom ) { }
 
     Geometry& geometry( void ) { return geom_; }
     const Geometry& geometry( void ) const { return geom_; }
@@ -45,6 +54,8 @@ struct WriteFeature< Placemark >
     {
         out << getIndent( indent ) << "<Placemark>" << "\n";
         p.writeName( out , indent + 1 );
+        p.writeStyleUrl( out , indent + 1 );
+        p.writeStyle( out , indent + 1 );
         p.geometry().write( out , indent + 1 );
         out << getIndent( indent ) << "</Placemark>" << "\n";
     }

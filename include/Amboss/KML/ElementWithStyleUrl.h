@@ -13,6 +13,7 @@
 #define AMBOSS_ELEMENTWITHSTYLEURL_H_INCLUDED
 
 #include <string>
+#include <vector>
 
 #include <Amboss/KML/WriterHelper.h>
 
@@ -24,22 +25,27 @@ class ElementWithStyleUrl
 {
 public:
 
-    ElementWithStyleUrl( void ) : url_( "" ) { }
-    ElementWithStyleUrl( const std::string &url ) : url_( url ) { }
+    typedef std::vector< std::string > UrlSequence;
 
-    const std::string& url( void ) const { return url_; }
-    std::string& url( void ) { return url_; }
+    ElementWithStyleUrl( void ) : urls_() { }
+    ElementWithStyleUrl( const std::string &url ) : urls_( 1 , url ) { }
 
-    inline void write( std::ostream& out , size_t indent )
+    const UrlSequence& urls( void ) const { return urls_; }
+    UrlSequence& urls( void ) { return urls_; }
+
+    inline void writeStyleUrl( std::ostream& out , size_t indent ) const
     {
-        if( url_ != "" )
-            out << getIndent( indent ) << "<StyleUrl>" << url_ << "</StyleUrl>" << "\n";
+        for( size_t i=0 ; i<urls_.size() ; ++i )
+        {
+            if( urls_[i] != "" )
+                out << getIndent( indent ) << "<StyleUrl>" << urls_[i] << "</StyleUrl>" << "\n";
+        }
     }
 
 
 private:
 
-    std::string url_;
+    UrlSequence urls_;
 };
 
 

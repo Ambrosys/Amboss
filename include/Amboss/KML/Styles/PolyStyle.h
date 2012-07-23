@@ -72,6 +72,21 @@ private:
 };
 
 
+inline bool operator==( const PolyStyle &s1 , const PolyStyle &s2 )
+{
+    return (
+        ( bool( s1 ) == bool( s2 ) ) &&
+        ( s1.colorStyle() == s2.colorStyle() ) &&
+        ( s1.fill() == s2.fill() ) &&
+        ( s1.outline() == s2.outline() )
+        );
+}
+
+inline bool operator!=( const PolyStyle &s1 , const PolyStyle &s2 )
+{
+    return !( s1 == s2 );
+}
+
 
 } // namespace KML
 } // namespace Amboss

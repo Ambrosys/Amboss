@@ -22,18 +22,27 @@
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
 #include <Amboss/KML/ElementWithName.h>
+#include <Amboss/KML/ElementWithStyleUrl.h>
+#include <Amboss/KML/ElementWithStyle.h>
+
 
 namespace Amboss {
 namespace KML {
 
-class Document : public ElementWithName
+class Document : public ElementWithName , public ElementWithStyleUrl , public ElementWithStyle
 {
 public:
 
     typedef std::vector< Feature > SequenceType;
 
-    Document( void ) : ElementWithName() , data_() { }
-    Document( const std::string &name ) : ElementWithName( name ) , data_() { }
+    Document( void )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle() , data_() { }
+    Document( const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle() , data_() { }
+    Document( const Style &style )
+        : ElementWithName() , ElementWithStyleUrl() , ElementWithStyle( style ) , data_() { }
+    Document( const Style &style , const std::string &name )
+        : ElementWithName( name ) , ElementWithStyleUrl() , ElementWithStyle( style ) , data_() { }
 
     template< class T >
     void add( T t )
@@ -56,6 +65,8 @@ public:
 	out << "<kml xmlns=\"http://www.opengis.net/kml/2.2\">" << "\n";
 	out << "<Document>" << "\n";
         writeName( out , 1 );
+        writeStyleUrl( out , 1 );
+        writeStyle( out , 1 );
 	for( const auto &obj : data_ )
 	{
             obj.write( out , 1 );
