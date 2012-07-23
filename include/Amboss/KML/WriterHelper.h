@@ -22,16 +22,13 @@ inline std::string getIndent( size_t indent )
 }
 
 
-inline void writePoint( std::ostream &out , double x , double y , size_t indent , const std::string &name )
+inline void writePoint( std::ostream &out , double x , double y , size_t indent )
 {
-    out << getIndent( indent     ) << "<Placemark>" << "\n";
-    if( name != "" ) out << getIndent( indent + 1 ) << "<name>" << name << "</name>" << "\n";
-    out << getIndent( indent + 1 ) << "<Point>" << "\n";
-    out << getIndent( indent + 2 ) << "<coordinates>" << "\n";
-    out << getIndent( indent + 3 ) << x << "," << y << ",0 " << "\n";
-    out << getIndent( indent + 2 ) << "</coordinates>" << "\n";
-    out << getIndent( indent + 1 ) << "</Point>" << "\n";
-    out << getIndent( indent     ) << "</Placemark>" << "\n";
+    out << getIndent( indent    ) << "<Point>" << "\n";
+    out << getIndent( indent + 1 ) << "<coordinates>" << "\n";
+    out << getIndent( indent + 2 ) << x << "," << y << ",0 " << "\n";
+    out << getIndent( indent + 1 ) << "</coordinates>" << "\n";
+    out << getIndent( indent     ) << "</Point>" << "\n";
 }
 
 } // namespace KML

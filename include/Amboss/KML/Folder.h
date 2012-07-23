@@ -13,7 +13,8 @@
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
 
-#include <Amboss/KML/Entity.h>
+#include <Amboss/KML/Geometry.h>
+#include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
 
 namespace Amboss {
@@ -23,29 +24,36 @@ class Folder
 {
 public:
 
-    typedef std::vector< Entity > ContainerType;
+    typedef std::vector< Feature > SequenceType;
+
+    Folder( void ) : data_() , name_( "" ) { }
+    Folder( const std::string &name ) : data_() , name_( name ) { }
 
     template< class T >
-    void add( T t , const std::string &name = std::string( "" ) )
+    void add( T t )
     {
-        data_.push_back( Entity( t , name ) );
+        data_.push_back( Feature( t ) );
     }
 
-    ContainerType& data( void ) { return data_; }
-    const ContainerType& data( void ) const { return data_; }
+    std::string& name( void ) { return name_; }
+    const std::string& name( void ) const { return name_; }
+
+    SequenceType& data( void ) { return data_; }
+    const SequenceType& data( void ) const { return data_; }
 
 private:
 
-    std::vector< Entity > data_;
+    SequenceType data_;
+    std::string name_;
 };
 
 template<>
-struct WriteObject< Folder >
+struct WriteFeature< Folder >
 {
-    static void write( std::ostream &out , const Folder &data , size_t indent , const std::string &name )
+    static void write( std::ostream &out , const Folder &data , size_t indent  )
     {
         out << getIndent( indent ) << "<Folder>" << "\n";
-        if( name != "" ) out << getIndent( indent + 1 ) << "<name>" << name << "</name>" << "\n";
+        if( data.name() != "" ) out << getIndent( indent + 1 ) << "<name>" << data.name() << "</name>" << "\n";
         for( auto e : data.data() )
         {
             e.write( out , indent + 1 );
@@ -54,13 +62,34 @@ struct WriteObject< Folder >
     }
 };
 
+
+
+template< class T  >
+Folder makeFolder( T t , const std::string &name = std::string( "" ) )
+{
+    Folder f( name );
+    f.add( t );
+    return f;
+}
+
+
 template< class Iter >
 Folder makeFolder( Iter first , Iter last , const std::string &name = std::string( "" ) )
 {
-    Folder f;
-    while( first != last ) f.add( *first++ , name );
+    Folder f( name );
+    while( first != last ) f.add( *first++ );
     return f;
 }
+
+template< class Iter >
+Folder makeFolderFromGeometry( Iter first , Iter last , const std::string &foldername = std::string( "" ) ,
+                               const std::string placemarkname = std::string( "" ) )
+{
+    Folder f( foldername );
+    while( first != last ) f.add( Placemark( *first++ , placemarkname ) );
+    return f;
+}
+
 
 template< class R >
 Folder makeFolderFromRange( const R &r , const std::string &name = std::string( "" ) )
@@ -68,13 +97,15 @@ Folder makeFolderFromRange( const R &r , const std::string &name = std::string( 
     return makeFolder( boost::const_begin( r ) , boost::const_end( r ) , name );
 }
 
-template< class T >
-Folder makeFolder( T t , const std::string &name = std::string( "" ) )
+template< class R >
+Folder makeFolderFromGeometryRange( const R &r , const std::string &foldername = std::string( "" ) ,
+                                     const std::string &placemarkname = std::string( "" ) )
 {
-    Folder f;
-    f.add( t , name );
-    return f;
+    return makeFolderFromGeometry( boost::const_begin( r ) , boost::const_end( r ) , foldername , placemarkname );
 }
+
+
+
 
 
 
