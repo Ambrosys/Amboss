@@ -15,38 +15,64 @@
 #include <stdexcept>
 #include <memory>
 
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/random_access_index.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/member.hpp>
+
 #include <ogrsf_frmts.h>
+
+#include <Amboss/Shapefile/Layer.h>
 
 namespace Amboss {
 namespace Shapefile {
 
 
+namespace mi = boost::multi_index;
 
-struct OGRDSDeleter
-{
-    void operator()( OGRDataSource *ds ) { OGRDataSource::DestroyDataSource( ds ); }
-};
+struct ById { };
+struct ByIndex { };
+struct ByName { };
 
-
-
-/*
- * Layers is a multi-index container with access by index and access by name
- *
- */
 class Shapefile
 {
 public:
 
-    Shapefile( const std::string &filename = "" )
-        : isInit_( false ) , filename_( filename ) , shp_()
-    { }
+    typedef std::pair< std::string , Layer > LayerContainerElement;
+    typedef mi::multi_index_container<
+        LayerContainerElement ,
+        mi::indexed_by<
+            mi::random_access< mi::tag< ById , ByIndex > > ,
+            mi::ordered_unique< mi::tag< ByName > , mi::member< LayerContainerElement , std::string , &LayerContainerElement::first > >
+            >
+        > LayerContainer;
 
-    void setFilename( const std::string &filename )
+    typedef typename LayerContainer::index< ByName >::type LayerContainerByName;
+    typedef typename LayerContainer::index< ByIndex >::type LayerContainerByIndex;
+
+
+    Shapefile( const std::string &filename = "" )
+        : isInit_( false ) , filename_( filename ) , shp_() , layers_()
     {
-        filename_ = filename;
-        shp_.reset( nullptr );
-        isInit_ = false;
+        try
+        {
+            init();
+        }
+        catch( std::exception &e )
+        {
+            std::cerr << "Can not initialize shapefile from " << filename_ << ", Error : " << e.what() << "\n";
+        }
     }
+
+    std::string name( void ) const { return std::string( shp_->GetName() ); }
+
+    const LayerContainer& layers( void ) const { return layers_; }
+    const LayerContainerByName& layersByName( void ) const { layers_.get< ByName >(); }
+    const LayerContainerByIndex& layersByIndex( void ) const { layers_.get< ByIndex >(); }
+    
+    // LayerContainer& layers( void ) { return layers_; }
+
+private:
 
     void init( void )
     {
@@ -54,66 +80,39 @@ public:
 
         if( filename_ == "" ) return;
 
-        shp_.reset(  OGRSFDriverRegistrar::Open( filename_.c_str() , FALSE ) );
+        shp_.reset( OGRSFDriverRegistrar::Open( filename_.c_str() , FALSE ) );
         if( !shp_ )
+        {
             throw std::runtime_error( std::string( "Could not open shapefile " ) + filename_ );
+        }
 
-        // GetLayer informations
-        // GetFeature informations
+        buildLayers();
 
         isInit_ = true;
     }
 
-    // auslagern nach Layers
-    template< class Visitor >
-    void visitAllElements( Visitor visitor )
+    void buildLayers( void )
     {
-        if( !isInit_ ) init();
-
-        // OGRLayer *layer = ptr->GetLayerByName( "Bstr_abschnitte" );
-        // if( layer == 0 )
-        // {
-        //     throw std::runtime_error( "No layer Bstr_abschnitte!" );
-        // }
-
-
-        // layer->ResetReading();
-
-        // Road road;
-        // OGRFeature *feature;
-        // while( ( feature = layer->GetNextFeature() ) != 0 )
-        // {
-        //     road.id = feature->GetFieldAsInteger( 0 );
-
-        //     OGRGeometry *geometry = feature->GetGeometryRef();
-        //     if( ( geometry != 0 ) && ( wkbFlatten( geometry->getGeometryType() ) == wkbLineString ) )
-        //     {
-        //         OGRLineString *lineString = dynamic_cast< OGRLineString* >( geometry );
-        //         if( lineString == 0 )
-        //         {
-        //             throw std::runtime_error( "lineString == NULL" );
-        //         }
-
-        //         road.segment.clear();
-        //         for( int i=0 ; i<lineString->getNumPoints() ; ++i )
-        //         {
-        //             double x = lineString->getX( i );
-        //             double y = lineString->getY( i );
-        //             road.segment.push_back( GeometryTypes::PointType( { x , y } ) );
-        //         }
-        //         handler( road );            
-        //     }
-        //     OGRFeature::DestroyFeature( feature );
-        // }
-
+        for( int i=0 ; i<shp_->GetLayerCount() ; ++i )
+        {
+            OGRLayer *layer = shp_->GetLayer( i );
+            if( !layer )
+            {
+                throw std::runtime_error( std::string( "Cannot create Layer " ) + std::to_string( i ) + " in shapefile " + filename_ );
+            }
+            layers_.push_back( std::make_pair( std::string( layer->GetName() ) , makeLayer( layer ) ) );
+        }
     }
 
-private:
+    struct OGRDSDeleter
+    {
+        void operator()( OGRDataSource *ds ) { OGRDataSource::DestroyDataSource( ds ); }
+    };
 
     bool isInit_;
     std::string filename_;
     std::unique_ptr< OGRDataSource , OGRDSDeleter > shp_;
-
+    LayerContainer layers_;
 };
 
 

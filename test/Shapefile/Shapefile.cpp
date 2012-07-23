@@ -20,5 +20,17 @@ using namespace Amboss::Shapefile;
 
 TEST( ShapefileShapefile , testConstruction )
 {
-    Shapefile shp( "" );
+    Shapefile shp( "samples" );
+    EXPECT_EQ( shp.name() , "samples" );
+    EXPECT_EQ( shp.layers().size() , 4 );
+    EXPECT_EQ( shp.layersByName().count( "blockgroups" ) , 1 );
+    EXPECT_EQ( shp.layersByName().count( "line" ) , 1 );
+    EXPECT_EQ( shp.layersByName().count( "point" ) , 1 );
+    EXPECT_EQ( shp.layersByName().count( "polygon" ) , 1 );
+}
+
+TEST( ShapefileShapefile , testLineLayer )
+{
+    Shapefile shp( "samples" );
+    Layer water = shp.layersByName().find( "line" )->second;
 }

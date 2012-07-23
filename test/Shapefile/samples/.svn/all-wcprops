@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/75/trunk/shapefiles/test
+END
+line.shp
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/75/trunk/shapefiles/test/line.shp
+END
+polygon.shp
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/75/trunk/shapefiles/test/polygon.shp
+END
+polygon.dbf
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/75/trunk/shapefiles/test/polygon.dbf
+END
+line.dbf
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/75/trunk/shapefiles/test/line.dbf
+END
+point.shp
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/75/trunk/shapefiles/test/point.shp
+END
+point.dbf
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/75/trunk/shapefiles/test/point.dbf
+END
+polygon.shx
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/75/trunk/shapefiles/test/polygon.shx
+END
+line.shx
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/75/trunk/shapefiles/test/line.shx
+END
+point.shx
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/75/trunk/shapefiles/test/point.shx
+END
