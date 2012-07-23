@@ -10,8 +10,6 @@ set(CMAKE_MODULE_PATH
 
 find_package (Boost REQUIRED)
 
-add_subdirectory (gtest)
-enable_testing(true)
 
 
 
@@ -23,7 +21,16 @@ include_directories ( ${AMBOSS_SOURCE_DIR}/include )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 
+if(IS_DIRECTORY gtest)
+  add_subdirectory (gtest)
+  enable_testing(true)
 
-add_subdirectory (test/KML)
+  add_subdirectory (test/KML)
+else()
+  message(WARNING "gtest directory not found. Unit tests will not be performed. Download googletest and put it in a directory gtest in the main directory.")
+endif()
+
+
+
 
 add_subdirectory (examples/KML) 
