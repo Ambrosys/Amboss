@@ -2,7 +2,7 @@
 include_directories ( ${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} )
 
 
-add_executable ( TestMain
+add_executable ( KMLTests
   ColorTest.cpp
   ColorStyleTest.cpp
   IconStyleTest.cpp
@@ -19,7 +19,7 @@ add_executable ( TestMain
   DocumentTest.cpp
   BoostGeometryTest.cpp )
 
-target_link_libraries ( TestMain gtest gtest_main )
+target_link_libraries ( KMLTests gtest gtest_main )
 
 
-add_custom_command(TARGET TestMain POST_BUILD COMMAND TestMain)
+add_custom_command(TARGET KMLTests POST_BUILD COMMAND KMLTests )
