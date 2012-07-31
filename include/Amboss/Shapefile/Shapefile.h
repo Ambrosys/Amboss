@@ -23,28 +23,23 @@
 #include <ogrsf_frmts.h>
 
 #include <Amboss/Shapefile/Layer.h>
+#include <Amboss/Shapefile/MITags.h>
 
 namespace Amboss {
 namespace Shapefile {
 
-
-namespace mi = boost::multi_index;
-
-struct ById { };
-struct ByIndex { };
-struct ByName { };
 
 class Shapefile
 {
 public:
 
     typedef std::pair< std::string , Layer > LayerContainerElement;
+    typedef mi::random_access< mi::tag< ById , ByIndex > > RandomAccessIndex ;
+    typedef mi::ordered_unique< mi::tag< ByName > ,
+                                mi::member< LayerContainerElement , std::string , &LayerContainerElement::first > > HashIndex;
     typedef mi::multi_index_container<
         LayerContainerElement ,
-        mi::indexed_by<
-            mi::random_access< mi::tag< ById , ByIndex > > ,
-            mi::ordered_unique< mi::tag< ByName > , mi::member< LayerContainerElement , std::string , &LayerContainerElement::first > >
-            >
+        mi::indexed_by< RandomAccessIndex , HashIndex >
         > LayerContainer;
 
     typedef typename LayerContainer::index< ByName >::type LayerContainerByName;

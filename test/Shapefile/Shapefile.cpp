@@ -32,5 +32,30 @@ TEST( ShapefileShapefile , testConstruction )
 TEST( ShapefileShapefile , testLineLayer )
 {
     Shapefile shp( "samples" );
-    Layer water = shp.layersByName().find( "line" )->second;
+    Layer lineLayer = shp.layersByName().find( "line" )->second;
+    
+    EXPECT_EQ( lineLayer.geometryType() , wkbLineString );
+
+    FeatureDesc fDesc = lineLayer.featureDesc();
+    FeatureDesc::FieldContainer fields = fDesc.fields();
+    EXPECT_EQ( fields.size() , 2 );
+    EXPECT_EQ( fields[0].name() , "FIRST_FLD" );
+    EXPECT_EQ( fields[1].name() , "SECOND_FLD" );
+    EXPECT_EQ( fields[0].typeName() , "String" );
+    EXPECT_EQ( fields[1].typeName() , "String" );
+
+    size_t count = 0;
+    lineLayer.visitFeatures( [&count] ( const Feature &f ) {
+            ++count; } );
+    EXPECT_EQ( count , 2 );
+
+    lineLayer.visitFeatures( [] ( const Feature &f ) {
+            EXPECT_NO_THROW( { const OGRLineString* l = f.geometry< OGRLineString >(); } );
+            ASSERT_THROW( { const OGRPoint* p = f.geometry< OGRPoint >(); } , std::runtime_error );
+        } );
+
+    lineLayer.visitFeatures( [] ( const Feature &f ) {
+            cout << f.get< std::string >( 0 ) << "\t" << f.get< std::string >( 1 ) << "\n"; } );
+
+
 }

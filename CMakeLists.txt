@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH
   )
 
 find_package (Boost REQUIRED)
-
+find_package( GDAL )
 
 
 
