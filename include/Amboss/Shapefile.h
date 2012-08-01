@@ -9,10 +9,11 @@
  * http://www.boost.org/LICENSE_1_0.txt)
  */
 
-#ifndef AMBOSS_SHAPEFILE_H_INCLUDED
-#define AMBOSS_SHAPEFILE_H_INCLUDED
+#ifndef AMBOSS_FORWARD_SHAPEFILE_H_INCLUDED
+#define AMBOSS_FORWARD_SHAPEFILE_H_INCLUDED
+
+#include <Amboss/Shapefile/Shapefile.h>
 
 
 
-
-#endif // AMBOSS_SHAPEFILE_H_INCLUDED
+#endif // AMBOSS_FORWARD_SHAPEFILE_H_INCLUDED
