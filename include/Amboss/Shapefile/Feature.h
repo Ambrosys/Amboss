@@ -13,6 +13,7 @@
 #define AMBOSS_FEATURE_H_INCLUDED
 
 #include <typeinfo>
+#include <stdexcept>
 
 #include <Amboss/Shapefile/FeatureDesc.h>
 #include <Amboss/Shapefile/Detail/FieldGetter.h>
@@ -58,6 +59,13 @@ public:
     template< class T >
     T get( const std::string &fieldName ) const
     {
+        int id = feature_->GetFieldIndex( fieldName.c_str() );
+        if( id < 0 )
+        {
+            std::string error = std::string( "Cannot find feature field for key " ) + fieldName;
+            throw std::runtime_error( error );
+        }
+        return Detail::FieldGetter< T >::getValue( id , feature_ );
     }
 
 private:
@@ -65,7 +73,7 @@ private:
     OGRFeature *feature_;
 };
 
-Feature makeFeature( OGRFeature *f )
+inline Feature makeFeature( OGRFeature *f )
 {
     return Feature( f );
 }

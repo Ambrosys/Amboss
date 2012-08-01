@@ -65,7 +65,7 @@ private:
     OGRLayer *ogrLayer_;
 };
 
-Layer makeLayer( OGRLayer *ogrLayer )
+inline Layer makeLayer( OGRLayer *ogrLayer )
 {
     return Layer( ogrLayer );
 }

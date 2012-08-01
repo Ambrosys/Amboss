@@ -37,7 +37,7 @@ private:
     OGRFieldDefn *field_;
 };
 
-FieldDesc makeFieldDesc( OGRFieldDefn *field )
+inline FieldDesc makeFieldDesc( OGRFieldDefn *field )
 {
     return FieldDesc( field );
 }

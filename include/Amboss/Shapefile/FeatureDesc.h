@@ -67,7 +67,7 @@ private:
     FieldContainer fields_;
 };
 
-FeatureDesc makeFeatureDesc( OGRFeatureDefn * defn )
+inline FeatureDesc makeFeatureDesc( OGRFeatureDefn * defn )
 {
     return FeatureDesc( defn );
 }

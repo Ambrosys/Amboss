@@ -54,8 +54,12 @@ TEST( ShapefileShapefile , testLineLayer )
             ASSERT_THROW( { const OGRPoint* p = f.geometry< OGRPoint >(); } , std::runtime_error );
         } );
 
-    lineLayer.visitFeatures( [] ( const Feature &f ) {
-            cout << f.get< std::string >( 0 ) << "\t" << f.get< std::string >( 1 ) << "\n"; } );
-
-
+    vector< pair< string , string > > featureFields;
+    featureFields.push_back( pair< string , string >( "First" , "Line" ) );
+    featureFields.push_back( pair< string , string >( "Appended" , "Line" ) );
+    count = 0;
+    lineLayer.visitFeatures( [&count,&featureFields] ( const Feature &f ) {
+            EXPECT_EQ( featureFields[count].first , f.get< string >( 0 ) );
+            EXPECT_EQ( featureFields[count].second , f.get< string >( 1 ) );
+            ++count; } );
 }
