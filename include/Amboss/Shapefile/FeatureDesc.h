@@ -31,6 +31,14 @@ class FeatureDesc
 
 public:
 
+    /*
+     * Possible values :
+     * wkbUnknown , wkbPoint , wkbLineString , wkbPolygon , wkbMultiPoint , wkbMultiLineString ,
+     * wkbMultiPolygon ,wkbGeometryCollection , wkbNone , wkbLinearRing , wkbPoint25D ,
+     * wkbLineString25D , wkbPolygon25D , wkbMultiPoint25D , wkbMultiLineString25D ,
+     * wkbMultiPolygon25D , wkbGeometryCollection25D
+     */
+    typedef OGRwkbGeometryType GeometryType;
     typedef std::vector< FieldDesc > FieldContainer;
 
 
@@ -49,6 +57,10 @@ public:
     }
 
     std::string name( void ) const { return defn_->GetName(); }
+
+    GeometryType geometryType( void ) const { return defn_->GetGeomType(); }
+    std::string geometryTypeName( void ) const { return std::string( OGRGeometryTypeToName( geometryType() ) ); }
+
 
     const FieldContainer& fields( void ) const { return fields_; }
 

@@ -60,6 +60,8 @@ public:
 
     // visitFeatures mit Filters
 
+    OGRLayer* ogrLayer( void ) { return ogrLayer_; }
+
 private:
 
     OGRLayer *ogrLayer_;

@@ -62,11 +62,13 @@ public:
 
     std::string name( void ) const { return std::string( shp_->GetName() ); }
 
-    const LayerContainer& layers( void ) const { return layers_; }
-    const LayerContainerByName& layersByName( void ) const { layers_.get< ByName >(); }
-    const LayerContainerByIndex& layersByIndex( void ) const { layers_.get< ByIndex >(); }
+    LayerContainer& layers( void ) { return layers_; }
+    LayerContainerByName& layersByName( void ) { return layers_.get< ByName >(); }
+    LayerContainerByIndex& layersByIndex( void ) { return layers_.get< ByIndex >(); }
     
     // LayerContainer& layers( void ) { return layers_; }
+
+    OGRDataSource* ogrDataSource( void ) { return shp_.get(); }
 
 private:
 

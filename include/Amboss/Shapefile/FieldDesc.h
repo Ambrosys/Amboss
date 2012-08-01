@@ -31,6 +31,8 @@ public:
 
     FieldType type( void ) const { return field_->GetType(); }
     std::string typeName( void ) const { return OGRFieldDefn::GetFieldTypeName( type() ); }
+    size_t width( void ) const { return size_t( field_->GetWidth() ); }
+    size_t precision( void ) const { return size_t( field_->GetPrecision() ); }
 
 private:
 
