@@ -30,7 +30,7 @@ namespace Detail {
     {
         static T getValue( int id , OGRFeature *feature )
         {
-            return T();
+            return T( feature->GetFieldAsInteger( id ) );
         }
     };
 
@@ -40,7 +40,7 @@ namespace Detail {
     {
         static T getValue( int id , OGRFeature *feature )
         {
-            return T();
+            return T( feature->GetFieldAsDouble( id ) );
         }
     };
 

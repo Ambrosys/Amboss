@@ -47,12 +47,23 @@ public:
         return g;
     }
 
+    size_t size( void ) const
+    {
+        return size_t( feature_->GetFieldCount() );
+    }
+
     // template< class Geom >
     // Geom geometry( void ) const { };
 
     template< class T >
     T get( size_t id ) const
     {
+        if( int( id ) >= feature_->GetFieldCount() )
+        {
+            std::string error = std::string( "Index " ) + std::to_string( id );
+            error += " is larger then number of fields " + std::to_string( feature_->GetFieldCount() ) ;
+            throw std::runtime_error( error );
+        }
         return Detail::FieldGetter< T >::getValue( int( id ) , feature_ );
     }
 

@@ -19,6 +19,7 @@
 #include <boost/multi_index/random_access_index.hpp>
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/utility.hpp>
 
 #include <ogrsf_frmts.h>
 
@@ -29,7 +30,7 @@ namespace Amboss {
 namespace Shapefile {
 
 
-class Shapefile
+class Shapefile : boost::noncopyable
 {
 public:
 

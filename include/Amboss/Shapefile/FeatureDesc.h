@@ -28,6 +28,7 @@ namespace Shapefile {
 
 class FeatureDesc
 {
+
 public:
 
     typedef std::vector< FieldDesc > FieldContainer;
@@ -66,6 +67,7 @@ private:
     OGRFeatureDefn * defn_;
     FieldContainer fields_;
 };
+
 
 inline FeatureDesc makeFeatureDesc( OGRFeatureDefn * defn )
 {
