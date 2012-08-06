@@ -1,6 +1,9 @@
 project (AMBOSS)
 cmake_minimum_required (VERSION 2.6) 
 
+set( SQLITE_DEFAULT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sqlite3 )
+
+
 # Add path for custom modules
 set(CMAKE_MODULE_PATH
   ${CMAKE_MODULE_PATH}
@@ -8,8 +11,11 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
   )
 
+
+
 find_package (Boost REQUIRED)
-find_package( GDAL )
+find_package (GDAL)
+find_package (Sqlite3 REQUIRED)
 
 
 
@@ -27,6 +33,7 @@ if(IS_DIRECTORY gtest)
 
   add_subdirectory (test/KML)
   add_subdirectory (test/Shapefile)
+  add_subdirectory (test/Sqlite3)
 else()
   message(WARNING "gtest directory not found. Unit tests will not be performed. Download googletest and put it in a directory gtest in the main directory.")
 endif()
