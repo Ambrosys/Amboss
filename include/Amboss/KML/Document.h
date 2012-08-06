@@ -56,6 +56,7 @@ public:
     void write( const std::string &filename )
     {
         std::ofstream fout( filename.c_str() );
+        fout.precision( 14 );
         write( fout );
     }
 

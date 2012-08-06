@@ -13,6 +13,7 @@
 #define AMBOSS_FIELDGETTER_H_INCLUDED
 
 #include <string>
+#include <memory>
 #include <type_traits>
 
 #include <ogrsf_frmts.h>
@@ -28,7 +29,8 @@ namespace Detail {
     template< class T >
     struct FieldGetter< T , typename std::enable_if< std::is_integral< T >::value >::type >
     {
-        static T getValue( int id , OGRFeature *feature )
+        template< class F >
+        static T getValue( int id , F &feature )
         {
             return T( feature->GetFieldAsInteger( id ) );
         }
@@ -38,7 +40,8 @@ namespace Detail {
     template< class T >
     struct FieldGetter< T , typename std::enable_if< std::is_floating_point< T >::value >::type >
     {
-        static T getValue( int id , OGRFeature *feature )
+        template< class F >
+        static T getValue( int id , F &feature )
         {
             return T( feature->GetFieldAsDouble( id ) );
         }
@@ -47,7 +50,8 @@ namespace Detail {
     template<>
     struct FieldGetter< std::string >
     {
-        static std::string getValue( int id , OGRFeature *feature )
+        template< class F >
+        static std::string getValue( int id , F &feature )
         {
             return std::string( feature->GetFieldAsString( id ) );
         }

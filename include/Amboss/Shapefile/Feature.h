@@ -14,6 +14,7 @@
 
 #include <typeinfo>
 #include <stdexcept>
+#include <memory>
 
 #include <Amboss/Shapefile/FeatureDesc.h>
 #include <Amboss/Shapefile/Detail/FieldGetter.h>
@@ -51,7 +52,7 @@ public:
     {
         return size_t( feature_->GetFieldCount() );
     }
-
+    
     // template< class Geom >
     // Geom geometry( void ) const { };
 
@@ -81,7 +82,15 @@ public:
 
 private:
 
-    OGRFeature *feature_;
+    struct OGRFeatureDeleter
+    {
+        void operator()( OGRFeature *f ) const
+        {
+            OGRFeature::DestroyFeature( f );
+        }
+    };
+
+     std::unique_ptr< OGRFeature , OGRFeatureDeleter >  feature_;
 };
 
 inline Feature makeFeature( OGRFeature *f )

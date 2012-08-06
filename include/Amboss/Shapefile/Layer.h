@@ -53,7 +53,6 @@ public:
         while( feature != 0 )
         {
             h( makeFeature( feature ) );
-            OGRFeature::DestroyFeature( feature );
             feature = ogrLayer_->GetNextFeature();
         }
     }
