@@ -1,0 +1,9 @@
+
+include_directories ( ${gtest_SOURCE_DIR}/include )
+include_directories ( ${gtest_SOURCE_DIR} )
+
+add_executable ( LogTests LogEntry.cpp OStreamLogger.cpp LogEntryLogger.cpp LogEntryStream.cpp )
+
+target_link_libraries ( LogTests gtest gtest_main )
+
+add_custom_command(TARGET LogTests POST_BUILD COMMAND LogTests )
