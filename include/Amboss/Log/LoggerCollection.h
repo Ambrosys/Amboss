@@ -12,37 +12,40 @@
 #ifndef AMBOSS_LOGGERCOLLECTION_H_INCLUDED
 #define AMBOSS_LOGGERCOLLECTION_H_INCLUDED
 
+#include <Amboss/Log/ILogger.h>
+#include <Amboss/Log/OStreamLogger.h>
+
+#include <memory>
 
 namespace Amboss {
 namespace Log {
 
 
-
-class LogEntryLogger 
-{
-public:
-
-    typedef std::vector< LogStream > StreamSequence;
-
-    LogEntryLogger( void )
-        : streams_( 1 , LogStream() )
-    { }
-
-    ~LogEntryLogger( void )
-    { }
-
-    void writeLogEntry( const LogEntry &e )
+    // ToDo : Create Sequence of Loggers
+    class LoggerCollection : public ILogger
     {
-        for( size_t i=0 ; i<streams_.size() ; ++i ) streams_[i].write( e );
-    }
+    public:
 
-    StreamSequence& streams( void ) { return streams_; }
-    const StreamSequence& streams( void ) const { return streams_; }
+        typedef std::vector< std::shared_ptr< ILogger > > LoggerSequence;
 
-private:
+        LoggerCollection( void )
+            : data_()
+        {
+            data_.push_back( std::shared_ptr< ILogger >( new OStreamLogger() ) );
+        }
 
-    StreamSequence streams_;
-};
+        void write( const LogEntry &e )
+        {
+            for( size_t i=0 ; i<data_.size() ; ++i ) data_[i]->write( e );
+        }
+
+        LoggerSequence& data( void ) { return data_; }
+        const LoggerSequence& data( void ) const { return data_; }
+
+    private:
+
+        LoggerSequence data_;
+    };
 
 
 } // namespace Log

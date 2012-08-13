@@ -12,13 +12,30 @@
 #ifndef AMBOSS_GLOBALLOGGER_H_INCLUDED
 #define AMBOSS_GLOBALLOGGER_H_INCLUDED
 
+#include <Amboss/Log/LoggerCollection.h>
+
 
 namespace Amboss {
 namespace Log {
 
-// class GlobalLogger : public LogEntryLogger
-// {
-// };
+class GlobalLogger
+{
+public:
+
+    static LoggerCollection& getInstance( void )
+    {
+        static LoggerCollection instance;
+        return instance;
+    }
+
+private:
+
+    GlobalLogger( void );
+    GlobalLogger( const GlobalLogger& );
+    GlobalLogger& operator=( const GlobalLogger& );
+
+};
+
 
 
 
