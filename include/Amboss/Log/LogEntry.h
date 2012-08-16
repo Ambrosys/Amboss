@@ -22,6 +22,7 @@ namespace Log {
 
     enum LogLevel
     {
+        PROGRESS ,
         INFO ,
         DEBUG ,
         WARNING ,
@@ -33,6 +34,7 @@ namespace Log {
     {
         switch( l )
         {
+        case PROGRESS : return "Progress"; break;
         case INFO : return "Info"; break;
         case DEBUG : return "Debug"; break;
         case WARNING : return "Warning"; break;
