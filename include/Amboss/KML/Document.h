@@ -13,6 +13,7 @@
 #define AMBOSS_DOCUMENT_H_INCLUDED
 
 #include <fstream>
+#include <stdexcept>
 
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
@@ -56,6 +57,7 @@ public:
     void write( const std::string &filename )
     {
         std::ofstream fout( filename.c_str() );
+        if( !fout.good() ) throw std::runtime_error( std::string( "Amboss::KML::Document::write() : Could not open " ) + filename );
         fout.precision( 14 );
         write( fout );
     }
