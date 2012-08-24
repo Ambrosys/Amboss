@@ -14,6 +14,7 @@ add_executable ( KMLTests
   ElementWithStyleUrlTest.cpp
   ElementWithStyleTest.cpp
   GeometryTest.cpp
+  MultiGeometryTest.cpp
   PlacemarkTest.cpp
   FolderTest.cpp
   DocumentTest.cpp

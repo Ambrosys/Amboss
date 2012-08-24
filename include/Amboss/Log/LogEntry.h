@@ -23,6 +23,7 @@ namespace Log {
     enum LogLevel
     {
         NOISE ,
+        TRACE ,
         PROGRESS ,
         INFO ,
         DEBUG ,
@@ -36,6 +37,7 @@ namespace Log {
         switch( l )
         {
         case NOISE : return "Noise"; break;
+        case TRACE : return "Trace"; break;
         case PROGRESS : return "Progress"; break;
         case INFO : return "Info"; break;
         case DEBUG : return "Debug"; break;
@@ -49,6 +51,7 @@ namespace Log {
     inline LogLevel stringToLogLevel( const std::string &str )
     {
         if( str == "Noise" ) return NOISE;
+        else if( str == "Trace" ) return TRACE;
         else if( str == "Progress" ) return PROGRESS;
         else if( str == "Info" ) return INFO;
         else if( str == "Debug" ) return DEBUG;
