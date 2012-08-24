@@ -12,6 +12,7 @@
 #ifndef AMBOSS_MULTIGEOMETRY_H_INCLUDED
 #define AMBOSS_MULTIGEOMETRY_H_INCLUDED
 
+#include <vector>
 #include <Amboss/KML/Geometry.h>
 #include <Amboss/KML/WriterHelper.h>
 

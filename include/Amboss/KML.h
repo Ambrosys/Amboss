@@ -15,6 +15,7 @@
 
 // forward includes
 #include <Amboss/KML/Geometry.h>
+#include <Amboss/KML/MultiGeometry.h>
 #include <Amboss/KML/Feature.h>
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/Folder.h>
