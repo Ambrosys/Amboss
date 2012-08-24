@@ -22,7 +22,8 @@ enum DefaultIcons
 {
     ShadedDot ,     // "http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png"
     Paddle ,        // "http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"
-    PushPin         // "http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png"
+    PushPin ,       // "http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png"
+    Circle          // "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png"
 };
 
 inline std::string getDefaultIconUrl( DefaultIcons icon )
@@ -32,6 +33,7 @@ inline std::string getDefaultIconUrl( DefaultIcons icon )
     case ShadedDot : return "http://maps.google.com/mapfiles/kml/shapes/shaded_dot.png"; break;
     case Paddle : return "http://maps.google.com/mapfiles/kml/paddle/wht-blank.png"; break;
     case PushPin : return "http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png"; break;
+    case Circle : return "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png"; break;
     default : return ""; break;
     }
 };
