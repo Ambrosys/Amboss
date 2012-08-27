@@ -36,8 +36,8 @@ public:
     {
         switch( c )
         {
-        case White : color_ = {{ 255, 0 , 0 , 0 }}; break;
-        case Black : color_ = {{ 255, 255 , 255 , 255 }}; break;
+        case White : color_ = {{ 255, 255 , 255 , 255 }}; break;
+        case Black : color_ = {{ 255, 0 , 0 , 0 }}; break;
         case Red : color_ = {{ 255, 0 , 0 , 255 }}; break;
         case Green : color_ = {{ 255, 0 , 255 , 0 }}; break;
         case Blue : color_ = {{ 255, 255 , 0 , 0 }}; break;
