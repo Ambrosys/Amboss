@@ -62,10 +62,10 @@ namespace Detail
 
 #define AMB_LOG_LEVEL( logger , logLevel )        \
     for( \
-        Amboss::Log::Detail::LogStreamWrapper stream( \
-                       logger ,                                      \
-                       makeLogEntry( logLevel , "" , __FILE__ , __LINE__ ) ) ; \
-    !stream.first() ;                                                   \
+        Amboss::Log::Detail::LogStreamWrapper stream(                \
+            logger ,                                                    \
+            makeLogEntry( logLevel , "" , __FILE__ , __LINE__ ) ) ;     \
+        !stream.first() ;                                               \
         )                                                               \
         stream.getStream()
 
@@ -76,6 +76,8 @@ namespace Detail
 #define AMB_GLOBAL_LOG_LEVEL( logLevel ) AMB_LOG_LEVEL( Amboss::Log::GlobalLogger::getInstance() , logLevel )
 
 #define AMB_GLOBAL_LOG AMB_GLOBAL_LOG_LEVEL( Amboss::Log::INFO )
+
+
 
 
 
