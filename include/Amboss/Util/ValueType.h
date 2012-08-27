@@ -14,6 +14,12 @@
 
 #include <memory>
 #include <stdexcept>
+#include <type_traits>
+
+#ifdef AMB_DEBUG
+#include <iostream>
+#include <typeinfo>
+#endif
 
 namespace Amboss {
 namespace Util {
@@ -23,18 +29,49 @@ namespace Util {
     {
     public:
 
-        ValueType( void )
+        ValueType( void ) noexcept
             : value_()
-        { }
+        {
+            #ifdef AMB_DEBUG
+            std::cout << "ValueType::ValueType()" << std::endl;
+            #endif
+        }
+
+        ValueType( const ValueType &t )
+            : value_( t.value_->copy() )
+        {
+            #ifdef AMB_DEBUG
+            std::cout << "ValueType::ValueType( const ValueType & )" << std::endl;
+            #endif
+        }
+
+        ValueType( ValueType &&t ) noexcept
+            : value_( t.value_.get() )
+        {
+            t.value_.reset();
+            #ifdef AMB_DEBUG
+            std::cout << "ValueType::ValueType( ValueType && )" << std::endl;
+            #endif
+        }
 
         template< class T >
         ValueType( const T& t )
             : value_( new ValueModel< T >( t ) )
-        { }
+        {
+            #ifdef AMB_DEBUG
+            std::cout << "ValueType::ValueType( const T& ) with T = " << typeid( T ).name() << std::endl;
+            #endif
+        }
 
-        ValueType( const ValueType &t )
-            : value_( t.value_->copy() )
-        { }
+        template< class T >
+        ValueType( T &&t )
+            : value_( new ValueModel< typename std::remove_reference< T >::type >( std::move( t ) ) )
+        {
+            #ifdef AMB_DEBUG
+            std::cout << "ValueType::ValueType( T && ) with T = " << typeid( T ).name() << std::endl;
+            #endif
+        }
+
 
         template< class T >
         ValueType& operator=( const T &t )
@@ -46,6 +83,13 @@ namespace Util {
         ValueType& operator=( const ValueType &t )
         {
             this->value_.reset( t.value_->copy() );
+            return *this;
+        }
+
+        ValueType& operator=( ValueType &&t ) noexcept
+        {
+            this->value_.reset( t.value_.get() );
+            t.value_.reset();
             return *this;
         }
 
@@ -108,7 +152,18 @@ namespace Util {
 
         template< class T >
         struct ValueModel : public ValueInterface {
-            ValueModel( const T& t ) : t_( t ) { }
+            ValueModel( const T& t ) : t_( t )
+            {
+                #ifdef AMB_DEBUG
+                std::cout << "ValueModel< T >::ValueModel< T >( const T & ) with T = " << typeid( T ).name() << std::endl;
+                #endif
+            }
+            ValueModel( T&& t ) : t_( std::move( t ) )
+            {
+                #ifdef AMB_DEBUG
+                std::cout << "ValueModel< T >::ValueModel< T >( T && ) with T = " << typeid( T ).name() << std::endl;
+                #endif
+            }
             const std::type_info& type( void ) const { return typeid( T ); }
             virtual ValueInterface* copy( void ) const { return new ValueModel< T >( t_ ); }
             T t_;
@@ -117,6 +172,12 @@ namespace Util {
         std::unique_ptr< ValueInterface > value_;
     };
 
+    // static_assert( std::is_nothrow_default_constructible< ValueType >::value , "is_nothrow_default_constructible" );
+    // static_assert( std::is_copy_constructible< ValueType >::value, "is_copy_constructible" );
+    // static_assert( std::is_copy_assignable< ValueType >::value, "is_copy_assignable" );
+    // static_assert( std::is_nothrow_move_constructible< ValueType >::value, "is_nothrow_move_constructible" );
+    // static_assert( std::is_nothrow_move_assignable< ValueType >::value, "is_nothrow_move_assignable" );
+    // static_assert( std::is_nothrow_destructible< ValueType >::value, "is_nothrow_destructible" );
 
 
 

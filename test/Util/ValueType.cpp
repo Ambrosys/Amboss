@@ -9,6 +9,8 @@
  * http://www.boost.org/LICENSE_1_0.txt)
  */
 
+#define AMB_DEBUG 1
+
 #include <sstream>
 #include <utility>
 #include <iostream>
@@ -19,6 +21,8 @@
 
 using namespace std;
 using namespace Amboss::Util;
+
+
 
 TEST( ValueType , testDefaultConstructor )
 {
@@ -41,6 +45,24 @@ TEST( ValueType , testValueConstructor )
             EXPECT_EQ( a , 10 );
         });
 }
+
+TEST( ValueType , testValueMoveConstructor )
+{
+    std::string a = "Hello";
+    ValueType v( std::move( a ) );
+    EXPECT_FALSE( v.empty() );
+    EXPECT_TRUE( v.sameType< std::string >() );
+    EXPECT_NO_THROW({
+            EXPECT_EQ( v.as< std::string >() , "Hello" );
+        });
+    EXPECT_EQ( a , "" );
+    // EXPECT_THROW({ int a = v.as< int >(); } , std::runtime_error );
+    // EXPECT_NO_THROW({
+    //         int a = v.as( 10 );
+    //         EXPECT_EQ( a , 10 );
+    //     });
+}
+
 
 TEST( ValueType , testCopyConstructor )
 {
