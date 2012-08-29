@@ -100,7 +100,7 @@ TEST( KMLBoostGeometry , testWriteSegment )
         "<LineString>\n"
         "  <tessellate>1</tessellate>\n"
         "  <coordinates>\n"
-        "    13.33,45.13, 13.35,45.14, \n"
+        "    13.33,45.13,0 13.35,45.14,0 \n"
         "  </coordinates>\n"
         "</LineString>\n";
 
@@ -115,7 +115,7 @@ TEST( KMLBoostGeometry , testWriteLineString )
         "<LineString>\n"
         "  <tessellate>1</tessellate>\n"
         "  <coordinates>\n"
-        "    13.34,45.76, 13.36,45.73, 13.38,45.74, \n"
+        "    13.34,45.76,0 13.36,45.73,0 13.38,45.74,0 \n"
         "  </coordinates>\n"
         "</LineString>\n";
 

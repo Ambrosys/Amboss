@@ -59,15 +59,15 @@ namespace Detail
 
 
 
-
-#define AMB_LOG_LEVEL( logger , logLevel )        \
+#define AMB_LOG_ENTRY( logger , entry )             \
     for( \
-        Amboss::Log::Detail::LogStreamWrapper stream(                \
-            logger ,                                                    \
-            makeLogEntry( logLevel , "" , __FILE__ , __LINE__ ) ) ;     \
-        !stream.first() ;                                               \
-        )                                                               \
+        Amboss::Log::Detail::LogStreamWrapper stream( logger , entry ) ;  \
+        !stream.first() ;                                                 \
+        )                                                                 \
         stream.getStream()
+
+#define AMB_LOG_LEVEL( logger , logLevel ) AMB_LOG_ENTRY( logger , makeLogEntry( logLevel , "" , __FILE__ , __LINE__ ) )
+    
 
 #define AMB_LOG( logger ) AMB_LOG_LEVEL( logger , Amboss::Log::INFO )
 

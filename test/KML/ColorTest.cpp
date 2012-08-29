@@ -41,15 +41,15 @@ TEST( KMLColor , testConstruction )
 TEST( KMLColor , testConstructionFromDefaultColors )
 {
     Color white( White );
-    EXPECT_EQ( white.red() , 0 );
-    EXPECT_EQ( white.green() , 0 );
-    EXPECT_EQ( white.blue() , 0 );
+    EXPECT_EQ( white.red() , 255 );
+    EXPECT_EQ( white.green() , 255 );
+    EXPECT_EQ( white.blue() , 255 );
     EXPECT_EQ( white.alpha() , 255 );
 
     Color black( Black );
-    EXPECT_EQ( black.red() , 255 );
-    EXPECT_EQ( black.green() , 255 );
-    EXPECT_EQ( black.blue() , 255 );
+    EXPECT_EQ( black.red() , 0 );
+    EXPECT_EQ( black.green() , 0 );
+    EXPECT_EQ( black.blue() , 0 );
     EXPECT_EQ( black.alpha() , 255 );
 
     Color red( Red );

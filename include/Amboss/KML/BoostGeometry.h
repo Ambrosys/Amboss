@@ -106,7 +106,7 @@ namespace KML {
             out << getIndent( indent + 0 ) << "<LineString>" << "\n";
             out << getIndent( indent + 1 ) << "<tessellate>1</tessellate>" << "\n";
             out << getIndent( indent + 1 ) << "<coordinates>" << "\n";
-            out << getIndent( indent + 2 ) << bg::get< 0 >( s.first ) << "," << bg::get< 1 >( s.first ) << ", ";
+            out << getIndent( indent + 2 ) << bg::get< 0 >( s.first ) << "," << bg::get< 1 >( s.first ) << ",0 ";
             out << bg::get< 0 >( s.second ) << "," << bg::get< 1 >( s.second ) << ",0 ";
             out << "\n";
             out << getIndent( indent + 1 ) << "</coordinates>" << "\n";
