@@ -102,7 +102,6 @@ private:
         void operator()( OGRDataSource *ds ) { OGRDataSource::DestroyDataSource( ds ); }
     };
 
-    bool isInit_;
     std::string filename_;
     std::unique_ptr< OGRDataSource , OGRDSDeleter > shp_;
     LayerContainer layers_;
