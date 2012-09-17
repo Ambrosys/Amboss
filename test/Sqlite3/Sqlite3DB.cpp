@@ -18,8 +18,56 @@
 using namespace std;
 using namespace Amboss::Sqlite3;
 
-TEST( TestName , TestCase )
+TEST( Sqlite3 , testDefaultConstructor )
 {
-    Sqlite3DB db( "abc.db" );
-    EXPECT_EQ( true , true );
+    EXPECT_NO_THROW(
+        {
+            Sqlite3DB db;
+        });
+}
+
+TEST( Sqlite3 , testConstructionFromFile )
+{
+    EXPECT_NO_THROW(
+        {
+            Sqlite3DB db( "abc.db" );
+            Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
+            EXPECT_EQ( res.size() , 1 );
+            EXPECT_EQ( res[0].size() , 1 );
+            EXPECT_EQ( res[0][0] , "test" );
+        });
+
+    EXPECT_THROW(
+        {
+            Sqlite3DB db( "dir/abc.db" );
+        } , std::runtime_error );
+}
+
+TEST( Sqlite3 , testOpen )
+{
+    EXPECT_NO_THROW(
+        {
+            Sqlite3DB db;
+            db.open( "abc.db" );
+            Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
+            EXPECT_EQ( res.size() , 1 );
+            EXPECT_EQ( res[0].size() , 1 );
+            EXPECT_EQ( res[0][0] , "test" );
+        });
+
+    EXPECT_THROW(
+        {
+            Sqlite3DB db;
+            db.open(  "dir/abc.db"  );
+        } , std::runtime_error );
+}
+
+TEST( Sqlite3 , testClose )
+{
+    EXPECT_THROW(
+        {
+            Sqlite3DB db( "abc.db" );
+            db.close();
+            Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
+        } , std::runtime_error );
 }

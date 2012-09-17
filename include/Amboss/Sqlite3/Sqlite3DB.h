@@ -27,19 +27,41 @@ namespace Sqlite3 {
     {
     public:
 
-        Sqlite3DB( const std::string &filename )
-            : database_( 0 ) , filename_( filename ) , good_( true )
+        typedef std::vector< std::vector< std::string > > ResultType;
+
+        Sqlite3DB( void )
+            : database_( 0 ) , filename_() 
         {
-            init();
+        }
+
+        Sqlite3DB( const std::string &filename )
+            : database_( 0 ) , filename_( filename )
+        {
+            open( filename );
         }
 
         ~Sqlite3DB( void )
         {
-            if( good_ )
-                sqlite3_close( database_ );
+            close();
         }
 
-        void query( const std::string &queryStr , std::vector< std::vector< std::string > > &results )
+        void open( const std::string &filename )
+        {
+            close();
+            if( sqlite3_open( filename.c_str() , &database_ ) != SQLITE_OK )
+            {
+                throw( std::runtime_error( std::string( "Could not open Sqlite DB " ) + filename + "." ) );
+            }
+            filename_ = filename;
+        }
+
+        void close( void )
+        {
+            filename_ = "";
+            if( database_ != 0 ) sqlite3_close( database_ );
+        }
+
+        void query( const std::string &queryStr , ResultType &results )
         {
             sqlite3_stmt *statement;
             if( sqlite3_prepare_v2( database_ , queryStr.c_str() , -1 , &statement , 0 ) == SQLITE_OK )
@@ -73,32 +95,17 @@ namespace Sqlite3 {
                 throw std::runtime_error( std::string( "Query error from query : " ) + queryStr + " : " +  error );
         }
 
-        std::vector< std::vector< std::string > > query( const std::string &queryStr )
+        ResultType query( const std::string &queryStr )
         {
             std::vector< std::vector< std::string > > results;
             query( queryStr , results );
             return results; 
         }
 
-        bool good( void ) const { return good_; }
-
-        explicit operator bool() { return good_; }
-
-
     private:
-
-        void init( void )
-        {
-            if( sqlite3_open( filename_.c_str() , &database_ ) != SQLITE_OK )
-            {
-                good_ = false;
-                std::cerr << "Konnte Sqlite Datenbank " << filename_ << " nicht oeffnen!" << std::endl;
-            }
-        }
 
         sqlite3* database_;
         std::string filename_;
-        bool good_;
     };
 
 
