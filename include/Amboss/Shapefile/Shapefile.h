@@ -46,40 +46,43 @@ public:
     typedef typename LayerContainer::index< ByName >::type LayerContainerByName;
     typedef typename LayerContainer::index< ByIndex >::type LayerContainerByIndex;
 
-
-    Shapefile( const std::string &filename = "" )
-        : isInit_( false ) , filename_( filename ) , shp_() , layers_()
+    Shapefile( void )
+        : filename_() , shp_() , layers_()
     {
     }
+
+
+    Shapefile( const std::string &filename = "" )
+        : filename_() , shp_() , layers_()
+    {
+        open( filename );
+    }
+
+    void open( const std::string &filename )
+    {
+        RegisterOGRShape();
+        
+        if( filename == "" ) return;
+
+        shp_.reset( OGRSFDriverRegistrar::Open( filename.c_str() , FALSE ) );
+        if( !shp_ )
+        {
+            throw std::runtime_error( std::string( "Could not open shapefile " ) + filename_ );
+        }
+        buildLayers();
+
+        filename_ = filename;
+    }
+
 
     std::string name( void ) const { return std::string( shp_->GetName() ); }
 
-    LayerContainer& layers( void ) { init(); return layers_; }
-    LayerContainerByName& layersByName( void ) { init(); return layers_.get< ByName >(); }
-    LayerContainerByIndex& layersByIndex( void ) { init(); return layers_.get< ByIndex >(); }
-    OGRDataSource* ogrDataSource( void ) { init(); return shp_.get(); }
+    LayerContainer& layers( void ) { return layers_; }
+    LayerContainerByName& layersByName( void ) { return layers_.get< ByName >(); }
+    LayerContainerByIndex& layersByIndex( void ) { return layers_.get< ByIndex >(); }
+    OGRDataSource* ogrDataSource( void ) { return shp_.get(); }
 
 private:
-
-    void init( void )
-    {
-        if( !isInit_ )
-        {
-            RegisterOGRShape();
-
-            if( filename_ == "" ) return;
-
-            shp_.reset( OGRSFDriverRegistrar::Open( filename_.c_str() , FALSE ) );
-            if( !shp_ )
-            {
-                throw std::runtime_error( std::string( "Could not open shapefile " ) + filename_ );
-            }
-
-            buildLayers();
-
-            isInit_ = true;
-        }
-    }
 
     void buildLayers( void )
     {

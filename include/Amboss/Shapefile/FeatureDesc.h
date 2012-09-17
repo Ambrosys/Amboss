@@ -51,7 +51,6 @@ public:
         }
         catch( std::exception &e )
         {
-            std::cerr << "Can not feature desc!" << "\n";
             std::rethrow_exception( std::make_exception_ptr( e ) );
         }
     }
