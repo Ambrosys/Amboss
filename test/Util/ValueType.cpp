@@ -109,5 +109,3 @@ TEST( ValueType , testCopyAssignment )
             EXPECT_EQ( v2.as< std::string >() , "Hello" );
         });
 }
-
-

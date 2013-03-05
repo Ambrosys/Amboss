@@ -36,7 +36,7 @@ inline std::string getDefaultIconUrl( DefaultIcons icon )
     case Circle : return "http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png"; break;
     default : return ""; break;
     }
-};
+}
 
 
 /*
