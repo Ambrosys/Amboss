@@ -74,6 +74,7 @@ namespace Log {
                     (*stream_) << formatter_( l );
                 }
             }
+            (*stream_) << std::flush;
         }
 
     
