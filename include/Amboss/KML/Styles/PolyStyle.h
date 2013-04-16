@@ -29,7 +29,7 @@ public:
         , colorStyle_()
     { }
 
-    PolyStyle( const ColorStyle &colorStyle , bool fill = true , bool outline = true )
+    PolyStyle( const ColorStyle &colorStyle , bool fill = false , bool outline = true )
         : isSet_( true ) 
         , colorStyle_( colorStyle ) , fill_( fill ) , outline_( outline )
     { }
