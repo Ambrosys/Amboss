@@ -116,6 +116,17 @@ inline bool operator!=( const IconStyle &s1 , const IconStyle &s2 )
 
 
 
+// iconIndex = 0 => 0 Grad
+// iconIndex = 1 => 3 Grad
+// iconIndex = 2 => 6 Grad
+// ..
+inline IconStyle DirectionIconStyle( size_t iconIndex , const ColorStyle &colorStyle = Amboss::KML::Black , double scale = 1.0 )
+{
+    IconStyle iconStyle( colorStyle , scale , std::string( "http://maps.google.com/mapfiles/dir_" ) + std::to_string( iconIndex ) + ".png" );
+    return iconStyle;
+}
+
+
 } // namespace KML
 } // namespace Amboss
 

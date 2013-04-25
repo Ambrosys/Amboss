@@ -82,7 +82,7 @@ TEST( KMLPolyStyle , testWrite1 )
         "<PolyStyle>\n"
         "  <color>ff00ff00</color>\n"
         "  <colorMode>normal</colorMode>\n"
-        "  <fill>1</fill>\n"
+        "  <fill>0</fill>\n"
         "  <outline>1</outline>\n"
         "</PolyStyle>\n";
     EXPECT_EQ( str.str() , cmp );
@@ -97,7 +97,7 @@ TEST( KMLPolyStyle , testWrite2 )
         "  <PolyStyle>\n"
         "    <color>ff00ff00</color>\n"
         "    <colorMode>normal</colorMode>\n"
-        "    <fill>1</fill>\n"
+        "    <fill>0</fill>\n"
         "    <outline>1</outline>\n"
         "  </PolyStyle>\n";
     EXPECT_EQ( str.str() , cmp );

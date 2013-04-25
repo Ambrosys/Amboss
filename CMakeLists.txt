@@ -27,7 +27,7 @@ include_directories ( ${AMBOSS_SOURCE_DIR}/include )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 
-if(IS_DIRECTORY gtest)
+if(IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest)
   add_subdirectory (gtest)
   enable_testing(true)
 

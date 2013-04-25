@@ -122,3 +122,12 @@ TEST( KMLIconStyle , testEq )
     IconStyle is5 = is3;
     EXPECT_EQ( is3 , is5 );
 }
+
+TEST( KMLIconStyle , testDirection )
+{
+    IconStyle is = DirectionIconStyle( 12 , Amboss::KML::White , 2.5 );
+    EXPECT_EQ( is.iconRef() , "http://maps.google.com/mapfiles/dir_12.png" );
+    EXPECT_DOUBLE_EQ( is.scale() , 2.5 );
+    EXPECT_EQ( is.colorStyle() , Amboss::KML::White );
+    EXPECT_TRUE( bool( is ) );
+}
