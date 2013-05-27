@@ -72,12 +72,11 @@ namespace Log {
                 if( filter_( l ) ) 
                 {
                     (*stream_) << formatter_( l );
+                    (*stream_) << std::flush;                    
                 }
             }
-            (*stream_) << std::flush;
         }
 
-    
     private:
 
         std::ostream* stream_;
