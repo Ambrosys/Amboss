@@ -21,7 +21,7 @@ using namespace Amboss::Log;
 TEST( LoggerCollection , test1 )
 {
     LoggerCollection logger;
-    logger.data().clear();
+    logger.removeAllLoggers();
     ostringstream stream;
     auto formatter = []( const LogEntry &e ) {
         std::string s = std::string( "[" ) + logLevelName( e.logLevel ) + std::string( "]" );
@@ -35,8 +35,8 @@ TEST( LoggerCollection , test1 )
     };
 
     ostringstream stream1 , stream2 ;
-    logger.data().push_back( std::shared_ptr< ILogger >( new OStreamLogger( stream1 , formatter , filter1 ) ) );
-    logger.data().push_back( std::shared_ptr< ILogger >( new OStreamLogger( stream2 , formatter , filter2 ) ) );
+    logger.addLogger( std::make_shared< OStreamLogger >( stream1 , formatter , filter1 ) );
+    logger.addLogger( std::make_shared< OStreamLogger >( stream2 , formatter , filter2 ) );
     logger.write( makeLogEntry( DEBUG , "message1" ) );
     logger.write( makeLogEntry( INFO , "message2" ) );
 

@@ -50,8 +50,8 @@ TEST_F( LogEntryStreamTest , testAmbLogLevel )
 TEST_F( LogEntryStreamTest , testAmbLogGlobal )
 {
     LoggerCollection &logger = GlobalLogger::getInstance();
-    logger.data().clear();
-    logger.data().push_back( std::shared_ptr< ILogger >( new OStreamLogger( stream_ ,  formatter_ ) ) );
+    logger.removeAllLoggers();
+    logger.addLogger( std::make_shared< OStreamLogger >( stream_ , formatter_ ) );
     AMB_GLOBAL_LOG << "message1";
     EXPECT_EQ( stream_.str() , "[Info] : message1\n" );
 }
@@ -59,8 +59,8 @@ TEST_F( LogEntryStreamTest , testAmbLogGlobal )
 TEST_F( LogEntryStreamTest , testAmbLogLevelGlobal )
 {
     LoggerCollection &logger = GlobalLogger::getInstance();
-    logger.data().clear();
-    logger.data().push_back( std::shared_ptr< ILogger >( new OStreamLogger( stream_ ,  formatter_ ) ) );
+    logger.removeAllLoggers();
+    logger.addLogger( std::make_shared< OStreamLogger >( stream_ , formatter_ ) );
     AMB_GLOBAL_LOG_LEVEL( DEBUG ) << "message2";
     EXPECT_EQ( stream_.str() , "[Debug] : message2\n" );
 }

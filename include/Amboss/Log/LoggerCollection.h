@@ -14,38 +14,59 @@
 
 #include <Amboss/Log/ILogger.h>
 #include <Amboss/Log/OStreamLogger.h>
+#include <Amboss/Log/ThreadingModel.h>
 
 #include <memory>
 
 namespace Amboss {
 namespace Log {
 
-
-    // ToDo : Create Sequence of Loggers
-    class LoggerCollection : public ILogger
+    template< class ThreadingModelT >
+    class BasicLoggerCollection : public ILogger
     {
     public:
 
         typedef std::vector< std::shared_ptr< ILogger > > LoggerSequence;
+        typedef ThreadingModelT ThreadingModel;
 
-        LoggerCollection( void )
-            : data_()
+        // TODO : Optimize and find the correct lock types;
+        typedef std::lock_guard< ThreadingModel > WriteLock;
+        typedef std::lock_guard< ThreadingModel > RemoveAllLoggerLock;
+        typedef std::lock_guard< ThreadingModel > AddLoggerLock;
+
+        BasicLoggerCollection( void ) : data_()
         {
             data_.push_back( std::shared_ptr< ILogger >( new OStreamLogger() ) );
         }
 
         void write( const LogEntry &e )
         {
+            WriteLock lock( threadingModel_ );
             for( size_t i=0 ; i<data_.size() ; ++i ) data_[i]->write( e );
         }
 
-        LoggerSequence& data( void ) { return data_; }
-        const LoggerSequence& data( void ) const { return data_; }
+        void addLogger( std::shared_ptr< ILogger > logger )
+        {
+            AddLoggerLock lock( threadingModel_ );
+            data_.push_back( logger );
+        }
+
+        void removeAllLoggers( void )
+        {
+            RemoveAllLoggerLock lock( threadingModel_ );
+            data_.clear();
+        }
 
     private:
 
         LoggerSequence data_;
+        ThreadingModel threadingModel_;
     };
+
+    typedef BasicLoggerCollection< SingleThreadModel > LoggerCollection;
+    typedef BasicOStreamLogger< MultiThreadModel > LoggerCollectionMT;
+
+
 
 
 } // namespace Log

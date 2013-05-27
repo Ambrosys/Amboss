@@ -22,10 +22,10 @@ TEST( TestName , TestCase )
 {
     ostringstream stream;
     OStreamLogger logger( stream );
-    logger.formatter() = []( const LogEntry &e ) {
+    logger.setFormatter( OStreamLogger::Formatter( []( const LogEntry &e ) {
         std::string s = std::string( "[" ) + logLevelName( e.logLevel ) + std::string( "]" );
         return s + std::string( " : " ) + e.message + "\n";
-    } ;
+    } ) );
     logger.write( makeLogEntry( INFO , "message" , "filename" , 23 ) );
 
     EXPECT_EQ( stream.str() , "[Info] : message\n" );

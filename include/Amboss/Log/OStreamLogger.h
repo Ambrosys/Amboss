@@ -14,6 +14,7 @@
 
 #include <Amboss/Log/ILogger.h>
 #include <Amboss/Log/LogEntry.h>
+#include <Amboss/Log/ThreadingModel.h>
 
 #include <functional>
 #include <string>
@@ -24,13 +25,10 @@
 namespace Amboss {
 namespace Log {
 
-
-    class OStreamLogger : public ILogger
+    template< class ThreadingModelT >
+    class BasicOStreamLogger : public ILogger
     {
     public:
-
-        typedef std::function< std::string( const LogEntry& ) > Formatter;
-        typedef std::function< bool( const LogEntry& ) > Filter;
 
         struct DefaultFilter {
             inline bool operator()( const LogEntry &l ) const {
@@ -42,7 +40,6 @@ namespace Log {
             inline std::string operator()( const LogEntry &e ) const {
                 std::ostringstream timeStr;
                 timeStr << e.time;
-
                 std::string s = std::string( "[" ) + logLevelName( e.logLevel ) + std::string( "]" );
                 s += std::string( " [" ) + timeStr.str() + std::string( "]" );
                 return s + std::string( " : " ) + e.message + "\n";
@@ -50,39 +47,92 @@ namespace Log {
         };
 
 
+        typedef ThreadingModelT ThreadingModel;
+        typedef std::function< std::string( const LogEntry& ) > Formatter;
+        typedef std::function< bool( const LogEntry& ) > Filter;
 
-        OStreamLogger( std::ostream &stream = std::cout ,
-                       Formatter formatter = DefaultFormatter() ,
-                       Filter filter = DefaultFilter() )
-            : stream_( &stream ) , formatter_( formatter ) , filter_( filter ) { }
+        // TODO : Optimize and find the correct lock types;
+        typedef std::lock_guard< ThreadingModel > GetFormatterLock;
+        typedef std::lock_guard< ThreadingModel > SetFormatterLock;
+        typedef std::lock_guard< ThreadingModel > GetFilterLock;
+        typedef std::lock_guard< ThreadingModel > SetFilterLock;
+        typedef std::lock_guard< ThreadingModel > GetStreamLock;
+        typedef std::lock_guard< ThreadingModel > SetStreamLock;
+        typedef std::lock_guard< ThreadingModel > WriteLock;
 
-        const Formatter& formatter( void ) const { return formatter_; }
-        Formatter& formatter( void ) { return formatter_; }
 
-        const Filter& filter( void ) const { return filter_; }
-        Filter& filter( void ) { return filter_; }
 
-        std::ostream& stream( void ) { return *stream_; }
-        void setStream( std::ostream &out ) { stream_ = &out; }
+        BasicOStreamLogger( std::ostream &stream = std::cout , Formatter formatter = DefaultFormatter() , Filter filter = DefaultFilter() )
+        : stream_( &stream ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) )
+        {
+        }
+
+        Formatter getFormatter( void ) const
+        {
+            GetFormatterLock lock( threadingModel_ );
+            return formatter_;
+        }
+
+        void setFormatter( Formatter formatter )
+        {
+            SetFormatterLock lock( threadingModel_ );
+            formatter_ = formatter; 
+        }
+
+        Filter getFilter( void ) const
+        {
+            GetFilterLock lock( threadingModel_ );
+            return filter_;
+        }
+
+        void setFilter( Filter filter )
+        {
+            SetFilterLock lock( threadingModel_ );
+            filter_ = filter;
+        }
+
+        std::ostream& getStream( void ) const
+        {
+            GetStreamLock lock( threadingModel_ );
+            return *stream_;
+        }
+
+        void setStream( std::ostream &out )
+        {
+            SetStreamLock lock( threadingModel_ );
+            stream_ = &out;
+        }
 
         void write( const LogEntry &l )
         {
+            WriteLock lock( threadingModel_ );
+            writeUnlocked( l );
+        }
+
+
+    private:
+
+        void writeUnlocked( const LogEntry &l )
+        {
             if( ( stream_ != 0 ) && bool( formatter_ ) && bool( filter_ ) )
             {
-                if( filter_( l ) ) 
+                if( filter_( l ) )
                 {
                     (*stream_) << formatter_( l );
-                    (*stream_) << std::flush;                    
+                    (*stream_) << std::flush;
                 }
             }
         }
 
-    private:
-
-        std::ostream* stream_;
         Formatter formatter_;
         Filter filter_;
+        std::ostream *stream_;
+        ThreadingModel threadingModel_;
     };
+
+    typedef BasicOStreamLogger< SingleThreadModel > OStreamLogger;
+    typedef BasicOStreamLogger< MultiThreadModel > OStreamLoggerMT;
+
 
 
 } // namespace Log
