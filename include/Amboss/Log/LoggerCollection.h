@@ -36,7 +36,7 @@ namespace Log {
 
         BasicLoggerCollection( void ) : data_()
         {
-            data_.push_back( std::shared_ptr< ILogger >( new OStreamLogger() ) );
+            data_.push_back( std::make_shared< OStreamLogger >() );
         }
 
         void write( const LogEntry &e )
@@ -64,7 +64,7 @@ namespace Log {
     };
 
     typedef BasicLoggerCollection< SingleThreadModel > LoggerCollection;
-    typedef BasicOStreamLogger< MultiThreadModel > LoggerCollectionMT;
+    typedef BasicLoggerCollection< MultiThreadModel > LoggerCollectionMT;
 
 
 
