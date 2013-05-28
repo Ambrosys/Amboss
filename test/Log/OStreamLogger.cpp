@@ -18,7 +18,7 @@
 using namespace std;
 using namespace Amboss::Log;
 
-TEST( TestName , TestCase )
+TEST( OStreamLogger , test1 )
 {
     ostringstream stream;
     OStreamLogger logger( stream );

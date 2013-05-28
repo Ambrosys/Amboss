@@ -21,18 +21,22 @@ namespace Log {
 
 struct SingleThreadModel
 {
-    void lock( void ) { }
-    void unlock( void ) { }
-    void try_lock( void ) { }
+    void lock( void ) const { }
+    void unlock( void ) const { }
+    bool try_lock( void ) const { return true; }
 };
 
 class MultiThreadModel
 {
 public:
+
+    MultiThreadModel( void ) : mutex_() {}
+    MultiThreadModel( MultiThreadModel const& ) : mutex_() {}
+    MultiThreadModel& operator=( MultiThreadModel const& ) { return *this; }
     
-    void lock( void ) { }
-    void unlock( void ) { }
-    void try_lock( void ) { }
+    void lock( void ) const { mutex_.lock(); }
+    void unlock( void ) const { mutex_.unlock(); }
+    bool try_lock( void ) const { return mutex_.try_lock(); }
 
 private:
 
