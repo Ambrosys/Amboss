@@ -63,7 +63,7 @@ namespace Log {
 
 
         BasicOStreamLogger( std::ostream &stream = std::cout , Formatter formatter = DefaultFormatter() , Filter filter = DefaultFilter() )
-        : stream_( &stream ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) )
+        : stream_( &stream ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) ) , threadingModel_()
         {
         }
 
@@ -124,9 +124,9 @@ namespace Log {
             }
         }
 
+        std::ostream *stream_;
         Formatter formatter_;
         Filter filter_;
-        std::ostream *stream_;
         ThreadingModel threadingModel_;
     };
 
