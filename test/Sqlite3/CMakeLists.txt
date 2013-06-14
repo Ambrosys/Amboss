@@ -10,4 +10,5 @@ add_executable ( Sqlite3Tests Sqlite3DB.cpp )
 
 target_link_libraries ( Sqlite3Tests gtest gtest_main ${SQLITE3_LIBRARY} )
 
-add_custom_command(TARGET Sqlite3Tests POST_BUILD COMMAND Sqlite3Tests )
+# add_custom_command(TARGET Sqlite3Tests POST_BUILD COMMAND Sqlite3Tests )
+add_test( NAME Sqlite3Tests COMMAND Sqlite3Tests )

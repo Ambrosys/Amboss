@@ -7,4 +7,5 @@ add_executable ( UtilTests ValueType.cpp )
 
 target_link_libraries ( UtilTests gtest gtest_main )
 
-add_custom_command(TARGET UtilTests POST_BUILD COMMAND UtilTests )
+# add_custom_command(TARGET UtilTests POST_BUILD COMMAND UtilTests )
+add_test( NAME UtilTests COMMAND UtilTests )

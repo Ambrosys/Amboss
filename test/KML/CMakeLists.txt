@@ -23,4 +23,5 @@ add_executable ( KMLTests
 target_link_libraries ( KMLTests gtest gtest_main )
 
 
-add_custom_command(TARGET KMLTests POST_BUILD COMMAND KMLTests )
+# add_custom_command(TARGET KMLTests POST_BUILD COMMAND KMLTests )
+add_test( NAME KMLTests COMMAND KMLTests )

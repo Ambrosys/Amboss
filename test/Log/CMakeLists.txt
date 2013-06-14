@@ -6,4 +6,5 @@ add_executable ( LogTests LogEntry.cpp OStreamLogger.cpp LoggerCollection.cpp Lo
 
 target_link_libraries ( LogTests gtest gtest_main )
 
-add_custom_command(TARGET LogTests POST_BUILD COMMAND LogTests )
+# add_custom_command(TARGET LogTests POST_BUILD COMMAND LogTests )
+add_test( NAME LogTests COMMAND LogTests )
