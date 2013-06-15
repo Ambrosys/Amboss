@@ -25,7 +25,7 @@ public:
 
     template<typename F>
     FunctionWrapper( F&& f )
-        : impl( new impl_type< F >( std::move( f ) ) )
+        : impl( new Model< F >( std::move( f ) ) )
     {}
 
     FunctionWrapper( FunctionWrapper&& other )

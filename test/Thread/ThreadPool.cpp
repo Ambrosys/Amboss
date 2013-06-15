@@ -17,7 +17,7 @@
 
 #include <gtest/gtest.h>
 
-#include <Amboss/ThreadPool/ThreadPool.h>
+#include <Amboss/Thread/ThreadPool.h>
 
 using namespace std;
 

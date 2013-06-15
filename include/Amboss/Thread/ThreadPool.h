@@ -82,7 +82,7 @@ private:
         while( !done_ )
         {
             task_type task;
-            if( workQueue_.try_pop( task ) )
+            if( workQueue_.tryPop( task ) )
             {
                 task();
             }
