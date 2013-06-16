@@ -15,6 +15,8 @@
 
 #include <Amboss/Sqlite3/Sqlite3DB.h>
 
+#include "Sqlite3TestConfig.h"
+
 using namespace std;
 using namespace Amboss::Sqlite3;
 
@@ -30,11 +32,11 @@ TEST( Sqlite3 , testConstructionFromFile )
 {
     EXPECT_NO_THROW(
         {
-            Sqlite3DB db( "abc.db" );
+            Sqlite3DB db( AMBOSS_SQLITE_SAMPLE_DB );
             Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
             EXPECT_EQ( res.size() , 1 );
             EXPECT_EQ( res[0].size() , 1 );
-            EXPECT_EQ( res[0][0] , "test" );
+            EXPECT_EQ( res[0][0] , "test1" );
         });
 
     EXPECT_THROW(
@@ -48,11 +50,11 @@ TEST( Sqlite3 , testOpen )
     EXPECT_NO_THROW(
         {
             Sqlite3DB db;
-            db.open( "abc.db" );
+            db.open( AMBOSS_SQLITE_SAMPLE_DB );
             Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
             EXPECT_EQ( res.size() , 1 );
             EXPECT_EQ( res[0].size() , 1 );
-            EXPECT_EQ( res[0][0] , "test" );
+            EXPECT_EQ( res[0][0] , "test1" );
         });
 
     EXPECT_THROW(
@@ -66,7 +68,7 @@ TEST( Sqlite3 , testClose )
 {
     EXPECT_THROW(
         {
-            Sqlite3DB db( "abc.db" );
+            Sqlite3DB db( AMBOSS_SQLITE_SAMPLE_DB );
             db.close();
             Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
         } , std::runtime_error );

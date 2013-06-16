@@ -12,3 +12,7 @@ target_link_libraries ( Sqlite3Tests gtest gtest_main ${SQLITE3_LIBRARY} )
 
 # add_custom_command(TARGET Sqlite3Tests POST_BUILD COMMAND Sqlite3Tests )
 add_test( NAME Sqlite3Tests COMMAND Sqlite3Tests )
+
+set ( AMBOSS_SQLITE_SAMPLE_DB ${CMAKE_CURRENT_SOURCE_DIR}/sample.db )
+
+configure_file ( ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3TestConfig.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3TestConfig.h )
