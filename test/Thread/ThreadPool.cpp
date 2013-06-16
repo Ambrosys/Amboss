@@ -11,20 +11,46 @@
 
 #define AMB_DEBUG 1
 
+#include <Amboss/Thread/ThreadPool.h>
+
 #include <sstream>
 #include <utility>
 #include <iostream>
 
 #include <gtest/gtest.h>
 
-#include <Amboss/Thread/ThreadPool.h>
+
 
 using namespace std;
+using namespace Amboss::Thread;
 
-
+void func1( void ) {   }
+double func2( void ) {  return 1.0; }
 
 
 TEST( ThreadPool , testDefaultConstructor )
 {
-    
+    ThreadPool pool();
+}
+
+TEST( ThreadPool , testConstructor )
+{
+    ThreadPool pool( 4 );
+    EXPECT_EQ( pool.threadCount() , 4 );
+}
+
+
+TEST( ThreadPool , testPoolWithVoidFunction )
+{
+    ThreadPool pool( 4 );
+    auto f = pool.submit( func1 );
+    f.get();
+}
+
+TEST( ThreadPool , testPoolWithDoubleFunction )
+{
+    ThreadPool pool( 4 );
+    auto f = pool.submit( func2 );
+    double res = f.get();
+    EXPECT_DOUBLE_EQ( 1.0 , res );
 }

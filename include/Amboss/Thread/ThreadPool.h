@@ -7,10 +7,14 @@
  * Use, modification and distribution is subject to the Boost Software License,
  * Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
+ * 
+ * This class is strongly inspired from Anthony Williams "C++ Concurrency in Action".
  */
 
 #ifndef AMBOSS_THREAD_POOL_H_INCLUDED
 #define AMBOSS_THREAD_POOL_H_INCLUDED
+
+
 
 #include <Amboss/Thread/ThreadSafeQueue.h>
 #include <Amboss/Thread/FunctionWrapper.h>
@@ -30,14 +34,14 @@ class ThreadPool
 public:
 
     typedef FunctionWrapper task_type;
-    // typedef std::function< void( void ) > task_type;
 
-    ThreadPool( size_t thread_count )
-        : done_( false ) , joiner_( threads_ )
+    ThreadPool( size_t threadCount = std::thread::hardware_concurrency() )
+        : done_( false ) , workQueue_() , threads_() , joiner_( threads_ ) ,
+          mutex_() , startCondition_()
     {
         try
         {
-            for( size_t i=0 ; i<thread_count ; ++i )
+            for( size_t i=0 ; i<threadCount ; ++i )
             {
                 threads_.push_back( std::thread( &ThreadPool::worker_thread , this ) );
 
@@ -61,10 +65,12 @@ public:
     std::future< typename std::result_of< FunctionType() >::type >
     submit( FunctionType f )
     {
-        typedef typename std::result_of< FunctionType() >::type result_type;
+        typedef typename std::result_of< FunctionType() >::type ResultType;
+        
+        if( threadCount() == 0 ) throw std::runtime_error( "ThreadPool::submit() : no threads present." );
 
-        std::packaged_task< result_type() > task( std::move( f ) );
-        std::future< result_type > res( task.get_future() );
+        std::packaged_task< ResultType() > task( std::move( f ) );
+        std::future< ResultType > res( task.get_future() );
         workQueue_.push( std::move( task ) );
         return res;
     }
@@ -72,6 +78,8 @@ public:
     bool empty( void ) const { return workQueue_.empty(); }
 
     size_t pending( void ) const { return workQueue_.size(); }
+    
+    size_t threadCount( void ) const { return threads_.size(); }
 
 
 private:

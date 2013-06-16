@@ -14,6 +14,7 @@
 #include <sstream>
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 using namespace std;
 using namespace Amboss::Thread;
@@ -22,15 +23,29 @@ void func( void )
 {
 }
 
+struct mocker
+{
+    MOCK_CONST_METHOD0( run , void() );
+};
+
+struct mock_functor
+{
+    mocker &mocker_;
+    mock_functor( mocker &m ) : mocker_( m ) { }
+    void operator()( void ) const { mocker_.run(); }
+};
+
 struct functor
 {
-    void operator()( void ) const { }
+    void operator()( void )  { }
 };
+
+
 
 TEST( FunctionWrapper , defaultConstruct )
 {
     FunctionWrapper f;
-    // f();
+    ASSERT_THROW( f() , std::runtime_error );
 }
 
 TEST( FunctionWrapper , typeConstrcutFromCFunction )
@@ -41,14 +56,20 @@ TEST( FunctionWrapper , typeConstrcutFromCFunction )
 
 TEST( FunctionWrapper , typeConstrcutFromFunctor )
 {
-    FunctionWrapper f( ( functor() ) );
+    mocker m;
+    FunctionWrapper f( ( mock_functor( m ) ) );
+    EXPECT_CALL( m , run() )
+        .Times( 1 );
     f();
 }
 
 
 TEST( FunctionWrapper , moveConstruct )
 {
-    FunctionWrapper f1( &func );
+    mocker m;
+    FunctionWrapper f1( ( mock_functor( m ) ) );
     FunctionWrapper f2( std::move( f1 ) );
+    EXPECT_CALL( m , run() )
+        .Times( 1 );
     f2();
 }

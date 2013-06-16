@@ -15,13 +15,15 @@
 
 #include <Amboss/Shapefile/Shapefile.h>
 
+#include "ShapefileTestConfig.h"
+
 using namespace std;
 using namespace Amboss::Shapefile;
 
 TEST( ShapefileShapefile , testConstruction )
 {
-    Shapefile shp( "samples" );
-    EXPECT_EQ( shp.name() , "samples" );
+    Shapefile shp( AMBOSS_SHAPEFILE_TEST_FILE );
+    EXPECT_EQ( shp.name() , AMBOSS_SHAPEFILE_TEST_FILE );
     EXPECT_EQ( shp.layers().size() , 4 );
     EXPECT_EQ( shp.layersByName().count( "blockgroups" ) , 1 );
     EXPECT_EQ( shp.layersByName().count( "line" ) , 1 );
@@ -31,7 +33,7 @@ TEST( ShapefileShapefile , testConstruction )
 
 TEST( ShapefileShapefile , testLineLayer )
 {
-    Shapefile shp( "samples" );
+    Shapefile shp( AMBOSS_SHAPEFILE_TEST_FILE );
     Layer lineLayer = shp.layersByName().find( "line" )->second;
     
     EXPECT_EQ( lineLayer.geometryType() , wkbLineString );

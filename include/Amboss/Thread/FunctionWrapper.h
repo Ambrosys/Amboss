@@ -13,6 +13,7 @@
 #define AMBOSS_FUNCTIONWRAPPER_H_INCLUDED
 
 #include <memory>
+#include <stdexcept>
 
 namespace Amboss {
 namespace Thread {
@@ -25,12 +26,10 @@ public:
 
     template<typename F>
     FunctionWrapper( F&& f )
-        : impl( new Model< F >( std::move( f ) ) )
-    {}
+        : impl( new Model< F >( std::move( f ) ) ) {}
 
     FunctionWrapper( FunctionWrapper&& other )
-        : impl( std::move( other.impl ) )
-    {}
+        : impl( std::move( other.impl ) ) {}
 
 
     FunctionWrapper& operator=( FunctionWrapper&& other )
@@ -43,7 +42,13 @@ public:
     FunctionWrapper( FunctionWrapper& ) = delete;
     FunctionWrapper& operator=( const FunctionWrapper& ) = delete;
     
-    void operator()( void ) { impl->call(); }
+    void operator()( void ) const
+    {
+        if( impl ) impl->call();
+        else throw std::runtime_error( "FunctionWrapper::operator() : no function passed" );
+    }
+    
+    operator bool( void ) const { return static_cast< bool >( impl ); }
 
 private:
 

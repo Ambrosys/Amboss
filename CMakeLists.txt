@@ -27,8 +27,11 @@ include_directories ( ${AMBOSS_SOURCE_DIR}/include )
 include_directories ( ${Boost_INCLUDE_DIRS} )
 
 
-if(IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest)
-  add_subdirectory (gtest)
+if ( IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest AND IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gmock )
+  
+  # add_subdirectory ( gtest )
+  add_subdirectory ( gmock )
+  
   enable_testing(true)
 
   add_subdirectory ( test/KML )
@@ -39,8 +42,10 @@ if(IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest)
   add_subdirectory ( test/Thread )
   
 else()
+
   message(WARNING "gtest directory not found. Unit tests will not be performed. Download googletest and put it in a directory gtest in the main directory.")
-endif()
+
+  endif()
 
 
 
