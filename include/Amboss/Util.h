@@ -13,6 +13,7 @@
 #define AMBOSS_UTIL_H_INCLUDED
 
 #include <Amboss/Util/ValueType.h>
-
+#include <Amboss/Util/Timer.h>
+#include <Amboss/Util/Exception.h>
 
 #endif // AMBOSS_UTIL_H_INCLUDED
