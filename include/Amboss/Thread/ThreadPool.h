@@ -63,7 +63,7 @@ public:
 
     template< typename FunctionType >
     std::future< typename std::result_of< FunctionType() >::type >
-    submit( FunctionType f )
+    submit( FunctionType &&f )
     {
         typedef typename std::result_of< FunctionType() >::type ResultType;
         

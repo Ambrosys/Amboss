@@ -15,5 +15,6 @@
 #include <Amboss/Util/ValueType.h>
 #include <Amboss/Util/Timer.h>
 #include <Amboss/Util/Exception.h>
+#include <Amboss/Util/StacktracePrinter.h>
 
 #endif // AMBOSS_UTIL_H_INCLUDED
