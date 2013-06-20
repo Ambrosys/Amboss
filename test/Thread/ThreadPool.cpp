@@ -27,6 +27,19 @@ using namespace Amboss::Thread;
 void func1( void ) {   }
 double func2( void ) {  return 1.0; }
 
+struct Moveable
+{
+    Moveable( void ) = default;
+    Moveable( Moveable const & ) = delete;
+    Moveable( Moveable && ) = default;
+    
+    
+    Moveable& operator=( Moveable const & ) = delete;
+    Moveable& operator=( Moveable && ) = default;
+    
+    void operator()( void ) const { double a = 1.0; a *= 2.0; }
+};
+
 
 TEST( ThreadPool , testDefaultConstructor )
 {
@@ -53,4 +66,11 @@ TEST( ThreadPool , testPoolWithDoubleFunction )
     auto f = pool.submit( func2 );
     double res = f.get();
     EXPECT_DOUBLE_EQ( 1.0 , res );
+}
+
+TEST( ThreadPool , testPoolWithMoveableFunction1 )
+{
+    Moveable m;
+    ThreadPool pool( 4 );
+    pool.submit( std::move( m ) );
 }

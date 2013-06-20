@@ -1,5 +1,11 @@
+
 project (AMBOSS)
-cmake_minimum_required (VERSION 2.6) 
+
+cmake_minimum_required (VERSION 2.8) 
+
+set ( CMAKE_CXX_FLAGS "-std=c++11" )
+set ( CMAKE_CXX_COMPILER "g++-4.8" )
+
 
 set( SQLITE_DEFAULT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sqlite3 )
 
@@ -10,6 +16,8 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
   )
+  
+
 
 
 
@@ -19,9 +27,9 @@ find_package (Sqlite3 REQUIRED)
 
 
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "-std=c++0x")        ## Optimize
-endif()
+# if(CMAKE_COMPILER_IS_GNUCXX)
+#    set(CMAKE_CXX_FLAGS "-std=c++0x")        ## Optimize
+# endif()
 
 include_directories ( ${AMBOSS_SOURCE_DIR}/include )
 include_directories ( ${Boost_INCLUDE_DIRS} )
@@ -30,7 +38,14 @@ include_directories ( ${Boost_INCLUDE_DIRS} )
 if ( IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest AND IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gmock )
   
   # add_subdirectory ( gtest )
-  add_subdirectory ( gmock )
+  # add_subdirectory ( gmock )
+  
+  include_directories ( gtest gtest/include gmock gmock/include )
+  
+  add_library ( gtest gtest/src/gtest-all.cc )
+  target_link_libraries ( gtest pthread )
+  add_library ( gtest_main gtest/src/gtest_main.cc )
+  add_library ( gmock gmock/src/gmock-all.cc )
   
   enable_testing(true)
 
@@ -45,7 +60,7 @@ else()
 
   message(WARNING "gtest directory not found. Unit tests will not be performed. Download googletest and put it in a directory gtest in the main directory.")
 
-  endif()
+endif()
 
 
 
