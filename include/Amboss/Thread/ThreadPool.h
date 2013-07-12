@@ -18,7 +18,6 @@
 
 #include <Amboss/Thread/ThreadSafeQueue.h>
 #include <Amboss/Thread/FunctionWrapper.h>
-#include <Amboss/Thread/ThreadJoiner.h>
 
 #include <vector>
 #include <thread>
@@ -36,17 +35,13 @@ public:
     typedef FunctionWrapper task_type;
 
     ThreadPool( size_t threadCount = std::thread::hardware_concurrency() )
-        : done_( false ) , workQueue_() , threads_() , joiner_( threads_ ) ,
-          mutex_() , startCondition_()
+        : done_( false ) , workQueue_() , threads_() 
     {
         try
         {
             for( size_t i=0 ; i<threadCount ; ++i )
             {
                 threads_.push_back( std::thread( &ThreadPool::worker_thread , this ) );
-
-                std::unique_lock< std::mutex > lk( mutex_ );
-                startCondition_.wait( lk );
             }
         }
         catch( ... )
@@ -59,6 +54,10 @@ public:
     ~ThreadPool()
     {
         done_ = true;
+        for( auto &thread : threads_ )
+        {
+            if( thread.joinable() ) thread.join();
+        }
     }
 
     template< typename FunctionType >
@@ -86,7 +85,6 @@ private:
 
     void worker_thread()
     {
-        startCondition_.notify_one();
         while( !done_ )
         {
             task_type task;
@@ -105,11 +103,6 @@ private:
     std::atomic_bool done_;
     ThreadsafeQueue< task_type > workQueue_;
     std::vector< std::thread > threads_;
-    ThreadJoiner joiner_;
-
-    std::mutex mutex_;
-    std::condition_variable startCondition_;
-
 };
 
 } // namespace Thread

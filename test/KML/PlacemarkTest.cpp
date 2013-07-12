@@ -51,8 +51,8 @@ TEST( KMLPlacemark , constructionWithStyle )
     Placemark p2( TestingPoint( 10.0 , 10.0 ) , Style( "id" ) , "Placemark" );
     EXPECT_FALSE( p1.styles().empty() );
     EXPECT_FALSE( p2.styles().empty() );
-    EXPECT_EQ( p1.styles().front() , Style( "id" ) );
-    EXPECT_EQ( p2.styles().front() , Style( "id" ) );
+    EXPECT_EQ( ( p1.styles().front() ) , Style( "id" ) );
+    EXPECT_EQ( ( p2.styles().front() ) , Style( "id" ) );
 }
 
 

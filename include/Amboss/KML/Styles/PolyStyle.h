@@ -25,7 +25,7 @@ class PolyStyle
 public:
 
     PolyStyle( void )
-        : isSet_( false )
+        : isSet_( false ) , fill_( false ) , outline_( true )
         , colorStyle_()
     { }
 

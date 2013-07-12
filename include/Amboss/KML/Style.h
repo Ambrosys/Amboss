@@ -124,6 +124,7 @@ inline bool operator!=( const Style &s1 , const Style &s2 )
 {
     return !( s1 == s2 );
 }
+    
 
 
 } // namespace KML

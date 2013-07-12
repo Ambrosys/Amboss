@@ -32,23 +32,6 @@ public:
         dataCond_.notify_one();
     }
 
-    void waitAndPop( T& value)
-    {
-        std::unique_lock< std::mutex > lk( mutex_ );
-        dataCond_.wait( lk , [this] { return !dataQueue_.empty(); } );
-        value = std::move( dataQueue_.front() );
-        dataQueue_.pop();
-    }
-
-    std::shared_ptr<T> waitAndPop( void )
-    {
-        std::unique_lock< std::mutex > lk( mutex_ );
-        dataCond_.wait( lk , [this]{ return !dataQueue_.empty(); } );
-        std::shared_ptr<T> res( std::make_shared<T>( std::move( dataQueue_.front() ) ) );
-        dataQueue_.pop();
-        return res;
-    }
-
     bool tryPop( T& value )
     {
         std::lock_guard< std::mutex > lk( mutex_ );
