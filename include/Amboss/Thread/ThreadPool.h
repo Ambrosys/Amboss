@@ -8,7 +8,7 @@
  * Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
  * http://www.boost.org/LICENSE_1_0.txt)
  * 
- * This class is strongly inspired from Anthony Williams "C++ Concurrency in Action".
+ * This class is strongly inspired from Anthony William's "C++ Concurrency in Action".
  */
 
 #ifndef AMBOSS_THREAD_POOL_H_INCLUDED
