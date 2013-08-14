@@ -108,6 +108,18 @@ namespace Log {
             WriteLock lock( threadingModel_ );
             writeUnlocked( l );
         }
+        
+    protected:
+        
+        BasicOStreamLogger( Formatter formatter , Filter filter )
+        : stream_( nullptr ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) ) , threadingModel_()
+        {
+        }
+
+        void setStream( std::ostream *stream )
+        {
+            stream_ = stream;
+        }
 
 
     private:
