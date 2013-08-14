@@ -116,11 +116,6 @@ namespace Log {
         {
         }
 
-        void setStream( std::ostream *stream )
-        {
-            stream_ = stream;
-        }
-
 
     private:
 
