@@ -17,8 +17,9 @@ set(CMAKE_MODULE_PATH
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules
   )
   
-
-
+include ( CreateVersionFile )
+message ( STATUS "Building project ${CMAKE_PROJECT_NAME}" )
+message ( STATUS "Version: ${AMBOSS_VERSION_SHORT}" )
 
 
 find_package (Boost REQUIRED)
