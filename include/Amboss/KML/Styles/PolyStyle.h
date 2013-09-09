@@ -25,8 +25,8 @@ class PolyStyle
 public:
 
     PolyStyle( void )
-        : isSet_( false ) , fill_( false ) , outline_( true )
-        , colorStyle_()
+        : isSet_( false ) , colorStyle_() , fill_( false ) , outline_( true )
+
     { }
 
     PolyStyle( const ColorStyle &colorStyle , bool fill = false , bool outline = true )
