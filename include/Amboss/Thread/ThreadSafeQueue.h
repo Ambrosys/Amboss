@@ -17,12 +17,15 @@
 #include <mutex>
 #include <condition_variable>
 
+namespace Amboss {
+namespace Thread {
+
 template<typename T>
-class ThreadsafeQueue
+class ThreadSafeQueue
 {
 public:
 
-    ThreadsafeQueue( void )
+    ThreadSafeQueue( void )
     {}
 
     void push( T new_value )
@@ -72,6 +75,7 @@ private:
 
 };
 
-
+} // namespace Thread
+} // namespace Amboss
 
 #endif // AMBOSS_THREAD_SAFE_QUEUE_H_INCLUDED
