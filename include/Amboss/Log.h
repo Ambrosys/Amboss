@@ -15,6 +15,7 @@
 #include <Amboss/Log/ILogger.h>
 #include <Amboss/Log/LogEntry.h>
 #include <Amboss/Log/OStreamLogger.h>
+#include <Amboss/Log/FileLogger.h>
 #include <Amboss/Log/LoggerCollection.h>
 #include <Amboss/Log/GlobalLogger.h>
 #include <Amboss/Log/LogEntryStream.h>

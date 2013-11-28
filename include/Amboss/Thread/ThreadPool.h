@@ -101,7 +101,7 @@ private:
 
 
     std::atomic_bool done_;
-    ThreadsafeQueue< task_type > workQueue_;
+    ThreadSafeQueue< task_type > workQueue_;
     std::vector< std::thread > threads_;
 };
 
