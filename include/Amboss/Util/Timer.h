@@ -22,7 +22,7 @@ class Timer
     template< class T >
     static inline double get_seconds( T t )
     {
-        return double( std::chrono::duration_cast< std::chrono::milliseconds >( t ).count() ) / 1000.0;
+        return double( std::chrono::duration_cast< std::chrono::microseconds >( t ).count() ) * 1.0e-6;
     }
 
     template< class T >
