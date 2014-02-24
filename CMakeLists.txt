@@ -59,7 +59,7 @@ if ( IS_DIRECTORY ${AMBOSS_SOURCE_DIR}/gtest AND IS_DIRECTORY ${AMBOSS_SOURCE_DI
   
 else()
 
-  message(WARNING "gtest directory not found. Unit tests will not be performed. Download googletest and put it in a directory gtest in the main directory.")
+  message(WARNING "gtest and/or gmock directories not found. Unit tests will not be performed. Download googletest and googlemock and put it in the directories gtest and gmock respectively inside the main directory.")
 
 endif()
 
