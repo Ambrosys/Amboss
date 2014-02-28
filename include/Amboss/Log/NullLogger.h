@@ -12,17 +12,18 @@
 #ifndef AMBOSS_LOG_NULLLOGGER_H_INCLUDED
 #define AMBOSS_LOG_NULLLOGGER_H_INCLUDED
 
+#include <Amboss/Log/ILogger.h>
 
 namespace Amboss {
 namespace Log {
 
 
-class NullLogger
+class NullLogger : public ILogger
 {
 public:
-
-    NullLogger( void );
-    ~NullLogger( void );
+    inline void write( const LogEntry &l )
+    {
+    }
 };
 
 
