@@ -19,17 +19,22 @@
 namespace Amboss {
 namespace Log {
 
+
 template< typename ThreadingModelT >
 class BasicFileLogger : public BasicOStreamLogger< ThreadingModelT >
 {
     typedef BasicOStreamLogger< ThreadingModelT > BaseType;
+    typedef typename BasicOStreamLogger< ThreadingModelT >::Formatter Formatter;
+    typedef typename BasicOStreamLogger< ThreadingModelT >::Filter Filter;
+    typedef typename BasicOStreamLogger< ThreadingModelT >::DefaultFormatter DefaultFormatter;
+    typedef typename BasicOStreamLogger< ThreadingModelT >::DefaultFilter DefaultFilter;
     
 public:
     
     
     BasicFileLogger( std::string const &filename ,
-                    Formatter formatter = BaseType::DefaultFormatter() ,
-                    Filter filter = BaseType::DefaultFilter() )
+                     Formatter formatter = DefaultFormatter() ,
+                     Filter filter = DefaultFilter() )
     : BaseType( formatter , filter ) , out_( std::make_shared< std::ofstream >( filename ) )
     {
         this->setStream( * ( out_.get() ) );
@@ -39,14 +44,14 @@ public:
     {
         return out_->good();
     }
+
+private:
     
     std::shared_ptr< std::ofstream > out_;
 };
 
 typedef BasicFileLogger< SingleThreadModel > FileLogger;
 typedef BasicFileLogger< MultiThreadModel > FileLoggerMT;
-
-
 
 
 } // namespace Log
