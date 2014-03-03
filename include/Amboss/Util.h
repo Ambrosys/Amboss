@@ -14,6 +14,7 @@
 
 #include <Amboss/Util/ValueType.h>
 #include <Amboss/Util/Timer.h>
+#include <Amboss/Util/ProcessIndenpendentTimer.h>
 #include <Amboss/Util/Exception.h>
 #include <Amboss/Util/StacktracePrinter.h>
 

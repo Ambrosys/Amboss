@@ -3,7 +3,7 @@ include_directories ( ${gtest_SOURCE_DIR}/include )
 include_directories ( ${gtest_SOURCE_DIR} )
 
 
-add_executable ( UtilTests ValueType.cpp Version.cpp )
+add_executable ( UtilTests ValueType.cpp Version.cpp ProcessIndependentTimer.cpp )
 
 target_link_libraries ( UtilTests gtest gtest_main )
 
