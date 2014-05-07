@@ -116,7 +116,7 @@ namespace Detail {
     struct AddPlacemarkToDocument
     {
         Document &doc_;
-        const std::string &pmname_;
+        const std::string pmname_;
         AddPlacemarkToDocument( Document &doc , const std::string pmname ) : doc_( doc ) , pmname_( pmname ) { }
         template< class T > void operator()( T t ) { doc_.add( Placemark( t , pmname_ ) ); }
     };
