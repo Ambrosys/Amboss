@@ -41,7 +41,9 @@ public:
         const OGRGeom* g = dynamic_cast< const OGRGeom* >( feature_->GetGeometryRef() );
         if( g == 0 )
         {
-            std::string error = "Cannot convert geometry to ";
+            std::string error = "Cannot convert geometry (";
+            error += typeid( feature_->GetGeometryRef() ).name();
+            error += ") to ";
             error += typeid( const OGRGeom* ).name() ;
             throw std::runtime_error( error );
         }
