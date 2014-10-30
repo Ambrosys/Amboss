@@ -14,6 +14,7 @@
 
 
 #include <Amboss/Thread/ThreadPool.h>
-
+#include <Amboss/Thread/SuspendingThreadPool.h>
+#include <Amboss/Thread/CompletingThreadPool.h>
 
 #endif // AMBOSS_THREAD_ALL_H_INCLUDED
