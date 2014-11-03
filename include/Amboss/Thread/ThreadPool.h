@@ -80,6 +80,14 @@ public:
     
     size_t threadCount( void ) const { return threads_.size(); }
 
+    /// check whether jobs in queue or threads still running
+    bool busy() const
+    {
+        if ( !empty() ) return true;
+        for ( auto &thread : threads_ )
+            if ( thread.joinable() ) return true; // found running thread
+        return false;
+    }
 
 private:
 
