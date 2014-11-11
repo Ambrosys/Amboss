@@ -88,6 +88,13 @@ public:
             if ( thread.joinable() ) return true; // found running thread
         return false;
     }
+    
+    void waitUntilFinished()
+    {
+        while ( busy() )
+            std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+    }
+
 
 private:
 
