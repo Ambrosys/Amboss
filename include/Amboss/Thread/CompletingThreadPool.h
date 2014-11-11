@@ -17,11 +17,11 @@ namespace Amboss {
 namespace Thread {
 
 /// Thread pool that completes all threads in desctructor (when going out of scope)
-class CompletingThreadPool
-  : public ThreadPool
+class CompletingThreadPool : public ThreadPool
 {
 public:
     using ThreadPool::ThreadPool;
+    
     ~CompletingThreadPool()
     {
         while ( !empty() )
