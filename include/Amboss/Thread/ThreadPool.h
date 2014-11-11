@@ -37,7 +37,7 @@ public:
     typedef FunctionWrapper task_type;
 
     ThreadPool( size_t threadCount = std::thread::hardware_concurrency() )
-        : done_( false ) , workQueue_() , threads_() 
+        : done_( false ) , numberRunning_( 0 ) , workQueue_() , threads_() 
     {
         try
         {
@@ -51,7 +51,7 @@ public:
             done_ = true;
             throw;
         }
-        std::cerr << "Started " << threads_.size() << " threads." << std::endl;
+        // std::cerr << "Started " << threads_.size() << " threads." << std::endl;
         std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
     }
     
@@ -83,41 +83,51 @@ public:
     size_t pending( void ) const { return workQueue_.size(); }
     
     size_t threadCount( void ) const { return threads_.size(); }
+    
+    size_t runningThreads() const { return numberRunning_; }
 
     /// check whether jobs in queue or threads still running
     bool busy() const
     {
+        return !empty() || numberRunning_ > 0;
+/*        
         if ( !empty() ) { std::cerr << workQueue_.size() << " jobs in queue " << std::endl; return true; }
         for ( auto &thread : threads_ )
             if ( thread.joinable() ) {  std::cerr << "Found running thread" << std::endl; return true; }// found running thread
-        return false;
+        return false;*/
     }
     
     void waitUntilFinished()
     {
-        while ( !empty() ) {
+        while ( busy() ) {
             std::cerr << workQueue_.size() << " jobs in queue " << std::endl;
             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
         }
-        int count= 0;
-        done_= true;
-        for( auto &thread : threads_ )
-            if( thread.joinable() ) 
-                count++;
-        std::cerr << "Found " << count << " running threads" << std::endl; 
         
         
-        
-        for( auto &thread : threads_ )
-            if( thread.joinable() ) 
-                thread.join();
-/*        
-        
-        
-        while ( busy() ) {
-            std::cerr << " Sleeping " << std::endl;
-            std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
-        }*/
+//         while ( !empty() ) {
+//             std::cerr << workQueue_.size() << " jobs in queue " << std::endl;
+//             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+//         }
+//         int count= 0;
+//         done_= true;
+//         for( auto &thread : threads_ )
+//             if( thread.joinable() ) 
+//                 count++;
+//         std::cerr << "Found " << count << " running threads" << std::endl; 
+//         
+//         
+//         
+//         for( auto &thread : threads_ )
+//             if( thread.joinable() ) 
+//                 thread.join();
+//        
+//         
+//         
+//         while ( busy() ) {
+//             std::cerr << " Sleeping " << std::endl;
+//             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+//         }
     }
 
 
@@ -130,7 +140,9 @@ private:
             task_type task;
             if( workQueue_.tryPop( task ) )
             {
+                ++numberRunning_;
                 task();
+                --numberRunning_;
             }
             else
             {
@@ -141,6 +153,7 @@ private:
 
 
     std::atomic_bool done_;
+    std::atomic_uint numberRunning_;
     ThreadSafeQueue< task_type > workQueue_;
     std::vector< std::thread > threads_;
 };
