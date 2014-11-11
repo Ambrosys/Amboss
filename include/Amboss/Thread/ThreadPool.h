@@ -23,8 +23,6 @@
 #include <thread>
 #include <future>
 
-#include <iostream>
-
 namespace Amboss {
 namespace Thread {
 
@@ -51,8 +49,6 @@ public:
             done_ = true;
             throw;
         }
-        // std::cerr << "Started " << threads_.size() << " threads." << std::endl;
-        std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
     }
     
     ~ThreadPool()
@@ -90,44 +86,13 @@ public:
     bool busy() const
     {
         return !empty() || numberRunning_ > 0;
-/*        
-        if ( !empty() ) { std::cerr << workQueue_.size() << " jobs in queue " << std::endl; return true; }
-        for ( auto &thread : threads_ )
-            if ( thread.joinable() ) {  std::cerr << "Found running thread" << std::endl; return true; }// found running thread
-        return false;*/
     }
     
+    /// Wait until all submitted jobs are finished
     void waitUntilFinished()
     {
-        while ( busy() ) {
-            std::cerr << workQueue_.size() << " jobs in queue " << std::endl;
+        while ( busy() ) 
             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
-        }
-        
-        
-//         while ( !empty() ) {
-//             std::cerr << workQueue_.size() << " jobs in queue " << std::endl;
-//             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
-//         }
-//         int count= 0;
-//         done_= true;
-//         for( auto &thread : threads_ )
-//             if( thread.joinable() ) 
-//                 count++;
-//         std::cerr << "Found " << count << " running threads" << std::endl; 
-//         
-//         
-//         
-//         for( auto &thread : threads_ )
-//             if( thread.joinable() ) 
-//                 thread.join();
-//        
-//         
-//         
-//         while ( busy() ) {
-//             std::cerr << " Sleeping " << std::endl;
-//             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
-//         }
     }
 
 
@@ -152,10 +117,10 @@ private:
     }
 
 
-    std::atomic_bool done_;
-    std::atomic_uint numberRunning_;
+    std::atomic_bool             done_;
+    std::atomic_uint             numberRunning_;
     ThreadSafeQueue< task_type > workQueue_;
-    std::vector< std::thread > threads_;
+    std::vector< std::thread >   threads_;
 };
 
 } // namespace Thread
