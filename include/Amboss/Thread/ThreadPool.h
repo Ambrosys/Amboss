@@ -23,6 +23,8 @@
 #include <thread>
 #include <future>
 
+#include <iostream>
+
 namespace Amboss {
 namespace Thread {
 
@@ -49,6 +51,8 @@ public:
             done_ = true;
             throw;
         }
+        std::cerr << "Started " << threads_.size() << " threads." << std::endl;
+        std::this_thread::sleep_for( std::chrono::milliseconds( 1000 ) );
     }
     
     ~ThreadPool()
@@ -83,16 +87,37 @@ public:
     /// check whether jobs in queue or threads still running
     bool busy() const
     {
-        if ( !empty() ) return true;
+        if ( !empty() ) { std::cerr << workQueue_.size() << " jobs in queue " << std::endl; return true; }
         for ( auto &thread : threads_ )
-            if ( thread.joinable() ) return true; // found running thread
+            if ( thread.joinable() ) {  std::cerr << "Found running thread" << std::endl; return true; }// found running thread
         return false;
     }
     
     void waitUntilFinished()
     {
-        while ( busy() )
+        while ( !empty() ) {
+            std::cerr << workQueue_.size() << " jobs in queue " << std::endl;
             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+        }
+        int count= 0;
+        done_= true;
+        for( auto &thread : threads_ )
+            if( thread.joinable() ) 
+                count++;
+        std::cerr << "Found " << count << " running threads" << std::endl; 
+        
+        
+        
+        for( auto &thread : threads_ )
+            if( thread.joinable() ) 
+                thread.join();
+/*        
+        
+        
+        while ( busy() ) {
+            std::cerr << " Sleeping " << std::endl;
+            std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+        }*/
     }
 
 
