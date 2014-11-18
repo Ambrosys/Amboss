@@ -95,15 +95,6 @@ public:
             std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
     }
 
-    /// check whether jobs in queue or threads still running
-    bool busy() const
-    {
-        if ( !empty() ) return true;
-        for ( auto &thread : threads_ )
-            if ( thread.joinable() ) return true; // found running thread
-        return false;
-    }
-
 private:
 
     void worker_thread()
