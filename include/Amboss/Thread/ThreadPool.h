@@ -35,7 +35,7 @@ public:
     typedef FunctionWrapper task_type;
 
     ThreadPool( size_t threadCount = std::thread::hardware_concurrency() )
-        : done_( false ) , workQueue_() , threads_() 
+        : done_( false ) , numberRunning_( 0 ) , workQueue_() , threads_() 
     {
         try
         {
@@ -79,6 +79,21 @@ public:
     size_t pending( void ) const { return workQueue_.size(); }
     
     size_t threadCount( void ) const { return threads_.size(); }
+    
+    size_t runningThreads() const { return numberRunning_; }
+
+    /// check whether jobs in queue or threads still running
+    bool busy() const
+    {
+        return !empty() || numberRunning_ > 0;
+    }
+    
+    /// Wait until all submitted jobs are finished
+    void waitUntilFinished()
+    {
+        while ( busy() ) 
+            std::this_thread::sleep_for( std::chrono::milliseconds( 50 ) );        
+    }
 
     /// check whether jobs in queue or threads still running
     bool busy() const
@@ -98,7 +113,9 @@ private:
             task_type task;
             if( workQueue_.tryPop( task ) )
             {
+                ++numberRunning_;
                 task();
+                --numberRunning_;
             }
             else
             {
@@ -108,9 +125,10 @@ private:
     }
 
 
-    std::atomic_bool done_;
+    std::atomic_bool             done_;
+    std::atomic_uint             numberRunning_;
     ThreadSafeQueue< task_type > workQueue_;
-    std::vector< std::thread > threads_;
+    std::vector< std::thread >   threads_;
 };
 
 } // namespace Thread
