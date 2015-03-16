@@ -10,6 +10,7 @@
  */
 
 #include <Amboss/Thread/FunctionWrapper.h>
+#include <Amboss/Util/AmbossException.h>
 
 #include <sstream>
 
@@ -18,6 +19,7 @@
 
 using namespace std;
 using namespace Amboss::Thread;
+using namespace Amboss::Util;
 
 void func( void )
 {
@@ -45,7 +47,7 @@ struct functor
 TEST( FunctionWrapper , defaultConstruct )
 {
     FunctionWrapper f;
-    ASSERT_THROW( f() , std::runtime_error );
+    ASSERT_THROW( f() , AmbossException );
 }
 
 TEST( FunctionWrapper , typeConstrcutFromCFunction )

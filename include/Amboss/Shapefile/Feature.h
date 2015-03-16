@@ -12,12 +12,15 @@
 #ifndef AMBOSS_FEATURE_H_INCLUDED
 #define AMBOSS_FEATURE_H_INCLUDED
 
+#include <Amboss/Shapefile/FeatureDesc.h>
+#include <Amboss/Shapefile/Detail/FieldGetter.h>
+#include <Amboss/Util/AmbossException.h>
+
 #include <typeinfo>
 #include <stdexcept>
 #include <memory>
 
-#include <Amboss/Shapefile/FeatureDesc.h>
-#include <Amboss/Shapefile/Detail/FieldGetter.h>
+
 
 
 namespace Amboss {
@@ -45,7 +48,7 @@ public:
             error += typeid( feature_->GetGeometryRef() ).name();
             error += ") to ";
             error += typeid( const OGRGeom* ).name() ;
-            throw std::runtime_error( error );
+            throw Amboss::Util::AmbossException( error );
         }
         return g;
     }
@@ -65,7 +68,7 @@ public:
         {
             std::string error = std::string( "Index " ) + std::to_string( id );
             error += " is larger then number of fields " + std::to_string( feature_->GetFieldCount() ) ;
-            throw std::runtime_error( error );
+            throw Amboss::Util::AmbossException( error );
         }
         return Detail::FieldGetter< T >::getValue( int( id ) , feature_ );
     }
@@ -77,7 +80,7 @@ public:
         if( id < 0 )
         {
             std::string error = std::string( "Cannot find feature field for key " ) + fieldName;
-            throw std::runtime_error( error );
+            throw Amboss::Util::AmbossException( error );
         }
         return Detail::FieldGetter< T >::getValue( id , feature_ );
     }

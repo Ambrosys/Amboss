@@ -12,6 +12,8 @@
 #ifndef AMBOSS_FUNCTIONWRAPPER_H_INCLUDED
 #define AMBOSS_FUNCTIONWRAPPER_H_INCLUDED
 
+#include <Amboss/Util/AmbossException.h>
+
 #include <memory>
 #include <stdexcept>
 
@@ -45,7 +47,7 @@ public:
     void operator()( void ) const
     {
         if( impl ) impl->call();
-        else throw std::runtime_error( "FunctionWrapper::operator() : no function passed" );
+        else throw Amboss::Util::AmbossException( "FunctionWrapper::operator() : no function passed" );
     }
     
     operator bool( void ) const { return static_cast< bool >( impl ); }

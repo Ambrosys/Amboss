@@ -12,10 +12,14 @@
 #ifndef AMBOSS_LOGENTRY_H_INCLUDED
 #define AMBOSS_LOGENTRY_H_INCLUDED
 
+#include <Amboss/Util/AmbossException.h>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include <string>
 #include <utility>
 #include <vector>
-#include <boost/date_time/posix_time/posix_time.hpp>
+
 
 namespace Amboss {
 namespace Log {
@@ -58,7 +62,7 @@ namespace Log {
         else if( str == "Warning" ) return WARNING;
         else if( str == "Error" ) return ERROR;
         else if( str == "Assert" ) return ASSERT;
-        else throw std::runtime_error( std::string( "Unknow log level type " ) + str );
+        else throw Amboss::Util::AmbossException( std::string( "Unknow log level type " ) + str );
     }
 
     struct LogEntry

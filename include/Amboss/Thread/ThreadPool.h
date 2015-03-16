@@ -14,10 +14,9 @@
 #ifndef AMBOSS_THREAD_POOL_H_INCLUDED
 #define AMBOSS_THREAD_POOL_H_INCLUDED
 
-
-
 #include <Amboss/Thread/ThreadSafeQueue.h>
 #include <Amboss/Thread/FunctionWrapper.h>
+#include <Amboss/Util/AmbossException.h>
 
 #include <vector>
 #include <thread>
@@ -47,7 +46,7 @@ public:
         catch( ... )
         {
             done_ = true;
-            throw;
+            throw Amboss::Util::AmbossException { "" };
         }
     }
     
@@ -66,7 +65,7 @@ public:
     {
         typedef typename std::result_of< FunctionType() >::type ResultType;
         
-        if( threadCount() == 0 ) throw std::runtime_error( "ThreadPool::submit() : no threads present." );
+        if( threadCount() == 0 ) throw Amboss::Util::AmbossException( "ThreadPool::submit() : no threads present." );
 
         std::packaged_task< ResultType() > task( std::move( f ) );
         std::future< ResultType > res( task.get_future() );

@@ -14,11 +14,13 @@
 #include <gtest/gtest.h>
 
 #include <Amboss/Shapefile/Shapefile.h>
+#include <Amboss/Util/AmbossException.h>
 
 #include "ShapefileTestConfig.h"
 
 using namespace std;
 using namespace Amboss::Shapefile;
+using namespace Amboss::Util;
 
 TEST( ShapefileShapefile , testConstruction )
 {
@@ -53,7 +55,7 @@ TEST( ShapefileShapefile , testLineLayer )
 
     lineLayer.visitFeatures( [] ( const Feature &f ) {
             EXPECT_NO_THROW( { const OGRLineString* l = f.geometry< OGRLineString >(); } );
-            EXPECT_THROW( { const OGRPoint* p = f.geometry< OGRPoint >(); } , std::runtime_error );
+            EXPECT_THROW( { const OGRPoint* p = f.geometry< OGRPoint >(); } , AmbossException );
         } );
 
     vector< pair< string , string > > featureFields;
@@ -64,7 +66,7 @@ TEST( ShapefileShapefile , testLineLayer )
             EXPECT_EQ( f.size() , 2 );
             EXPECT_EQ( featureFields[count].first , f.get< string >( 0 ) );
             EXPECT_EQ( featureFields[count].second , f.get< string >( 1 ) );
-            EXPECT_THROW( { std::string tmp = f.get< string >( 2 ); } , std::runtime_error );
+            EXPECT_THROW( { std::string tmp = f.get< string >( 2 ); } , AmbossException );
             ++count; } );
 
 
