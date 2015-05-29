@@ -12,19 +12,23 @@
 #ifndef AMBOSS_DOCUMENT_H_INCLUDED
 #define AMBOSS_DOCUMENT_H_INCLUDED
 
-#include <fstream>
-#include <stdexcept>
-
-#include <boost/range/begin.hpp>
-#include <boost/range/end.hpp>
-#include <boost/range/algorithm/for_each.hpp> 
-
 #include <Amboss/KML/Feature.h>
 #include <Amboss/KML/Placemark.h>
 #include <Amboss/KML/WriterHelper.h>
 #include <Amboss/KML/ElementWithName.h>
 #include <Amboss/KML/ElementWithStyleUrl.h>
 #include <Amboss/KML/ElementWithStyle.h>
+
+#include <Amboss/Util/AmbossException.h>
+
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/algorithm/for_each.hpp> 
+
+#include <fstream>
+#include <stdexcept>
+
+
 
 
 namespace Amboss {
@@ -57,7 +61,7 @@ public:
     void write( const std::string &filename )
     {
         std::ofstream fout( filename.c_str() );
-        if( !fout.good() ) throw std::runtime_error( std::string( "Amboss::KML::Document::write() : Could not open " ) + filename );
+        if( !fout.good() ) throw Amboss::Util::AmbossException( std::string( "Amboss::KML::Document::write() : Could not open " ) + filename );
         fout.precision( 14 );
         write( fout );
     }

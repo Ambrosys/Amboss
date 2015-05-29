@@ -14,6 +14,8 @@
 #ifndef AMBOSS_SQLITE3DB_H_INCLUDED
 #define AMBOSS_SQLITE3DB_H_INCLUDED
 
+#include <Amboss/Util/AmbossException.h>
+
 #include <stdexcept>
 
 #include "sqlite3.h"
@@ -50,7 +52,7 @@ namespace Sqlite3 {
             close();
             if( sqlite3_open( filename.c_str() , &database_ ) != SQLITE_OK )
             {
-                throw( std::runtime_error( std::string( "Could not open Sqlite DB " ) + filename + "." ) );
+                throw Amboss::Util::AmbossException( std::string( "Could not open Sqlite DB " ) + filename + "." );
             }
             filename_ = filename;
         }
@@ -92,7 +94,7 @@ namespace Sqlite3 {
 	     
             std::string error = sqlite3_errmsg( database_ );
             if(error != "not an error")
-                throw std::runtime_error( std::string( "Query error from query : " ) + queryStr + " : " +  error );
+                throw Amboss::Util::AmbossException( std::string( "Query error from query : " ) + queryStr + " : " +  error );
         }
 
         ResultType query( const std::string &queryStr )

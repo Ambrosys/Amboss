@@ -16,6 +16,8 @@
 
 
 #include <Amboss/Thread/FunctionWrapper.h>
+#include <Amboss/Util/AmbossException.h>
+
 #include <vector>
 #include <queue>
 #include <thread>
@@ -54,7 +56,7 @@ namespace Thread {
         {
             typedef typename std::result_of<FunctionType()>::type ResultType;
 
-            if( threadCount() == 0 ) throw std::runtime_error( "FastThreadPool::submit() : no threads present." );
+            if( threadCount() == 0 ) throw Amboss::Util::AmbossException( "FastThreadPool::submit() : no threads present." );
 
             std::packaged_task<ResultType()> task( std::move( f ) );
             std::future<ResultType> res( task.get_future() );

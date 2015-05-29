@@ -12,8 +12,9 @@
 #ifndef AMBOSS_SHAPEFILE_H_INCLUDED
 #define AMBOSS_SHAPEFILE_H_INCLUDED
 
-#include <stdexcept>
-#include <memory>
+#include <Amboss/Shapefile/Layer.h>
+#include <Amboss/Shapefile/MITags.h>
+#include <Amboss/Util/AmbossException.h>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/random_access_index.hpp>
@@ -23,8 +24,13 @@
 
 #include <ogrsf_frmts.h>
 
-#include <Amboss/Shapefile/Layer.h>
-#include <Amboss/Shapefile/MITags.h>
+#include <stdexcept>
+#include <memory>
+
+
+
+
+
 
 namespace Amboss {
 namespace Shapefile {
@@ -67,7 +73,7 @@ public:
         shp_.reset( OGRSFDriverRegistrar::Open( filename.c_str() , FALSE ) );
         if( !shp_ )
         {
-            throw std::runtime_error( std::string( "Could not open shapefile " ) + filename_ );
+            throw Amboss::Util::AmbossException( std::string( "Could not open shapefile " ) + filename_ );
         }
         buildLayers();
 
@@ -91,7 +97,7 @@ private:
             OGRLayer *layer = shp_->GetLayer( i );
             if( !layer )
             {
-                throw std::runtime_error( std::string( "Cannot create Layer " ) + std::to_string( i ) + " in shapefile " + filename_ );
+                throw Amboss::Util::AmbossException( std::string( "Cannot create Layer " ) + std::to_string( i ) + " in shapefile " + filename_ );
             }
             layers_.push_back( std::make_pair( std::string( layer->GetName() ) , makeLayer( layer ) ) );
         }

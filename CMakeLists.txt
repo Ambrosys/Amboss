@@ -4,8 +4,6 @@ project (AMBOSS)
 cmake_minimum_required (VERSION 2.8) 
 
 set ( CMAKE_CXX_FLAGS "-std=c++11" )
-set ( CMAKE_CXX_COMPILER "g++-4.8" )
-
 
 set( SQLITE_DEFAULT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/sqlite3 )
 

@@ -14,11 +14,13 @@
 #include <gtest/gtest.h>
 
 #include <Amboss/Sqlite3/Sqlite3DB.h>
+#include <Amboss/Util/AmbossException.h>
 
 #include "Sqlite3TestConfig.h"
 
 using namespace std;
 using namespace Amboss::Sqlite3;
+using namespace Amboss::Util;
 
 TEST( Sqlite3 , testDefaultConstructor )
 {
@@ -42,7 +44,7 @@ TEST( Sqlite3 , testConstructionFromFile )
     EXPECT_THROW(
         {
             Sqlite3DB db( "dir/abc.db" );
-        } , std::runtime_error );
+        } , AmbossException );
 }
 
 TEST( Sqlite3 , testOpen )
@@ -61,7 +63,7 @@ TEST( Sqlite3 , testOpen )
         {
             Sqlite3DB db;
             db.open(  "dir/abc.db"  );
-        } , std::runtime_error );
+        } , AmbossException );
 }
 
 TEST( Sqlite3 , testClose )
@@ -71,5 +73,5 @@ TEST( Sqlite3 , testClose )
             Sqlite3DB db( AMBOSS_SQLITE_SAMPLE_DB );
             db.close();
             Sqlite3DB::ResultType res = db.query( "SELECT * FROM testtable" );
-        } , std::runtime_error );
+        } , AmbossException );
 }

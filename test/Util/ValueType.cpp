@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 
 #include <Amboss/Util/ValueType.h>
+#include <Amboss/Util/AmbossException.h>
 
 using namespace std;
 using namespace Amboss::Util;
@@ -39,7 +40,7 @@ TEST( ValueType , testValueConstructor )
     EXPECT_NO_THROW({
             EXPECT_EQ( v.as< std::string >() , "Hello" );
         });
-    EXPECT_THROW({ int a = v.as< int >(); } , std::runtime_error );
+    EXPECT_THROW({ int a = v.as< int >(); } , AmbossException );
     EXPECT_NO_THROW({
             int a = v.as( 10 );
             EXPECT_EQ( a , 10 );
@@ -56,7 +57,7 @@ TEST( ValueType , testValueMoveConstructor )
             EXPECT_EQ( v.as< std::string >() , "Hello" );
         });
     EXPECT_EQ( a , "" );
-    // EXPECT_THROW({ int a = v.as< int >(); } , std::runtime_error );
+    // EXPECT_THROW({ int a = v.as< int >(); } , AmbossException );
     // EXPECT_NO_THROW({
     //         int a = v.as( 10 );
     //         EXPECT_EQ( a , 10 );

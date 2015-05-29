@@ -12,6 +12,8 @@
 #ifndef AMBOSS_VALUETYPE_H_INCLUDED
 #define AMBOSS_VALUETYPE_H_INCLUDED
 
+#include <Amboss/Util/AmbossException.h>
+
 #include <memory>
 #include <stdexcept>
 #include <type_traits>
@@ -130,7 +132,7 @@ namespace Util {
                 const ValueModel< T > *tmp = dynamic_cast< const ValueModel< T >* >( value_.get() );
                 return tmp->t_;
             }
-            throw std::runtime_error(
+            throw Amboss::Util::AmbossException(
                 std::string( "ValueType: Wrong type " ) + typeid( T ).name() + " requested for conversion in ValueType::as" );
         }
 
