@@ -22,7 +22,7 @@ namespace KML {
 
 enum GlobalColor
 {
-    White , Black , Red , Green , Blue , Yellow
+    White , Black , Red , Green , Blue , Yellow, Purple
 };
 
 class Color
@@ -42,6 +42,7 @@ public:
         case Green : color_ = {{ 255, 0 , 255 , 0 }}; break;
         case Blue : color_ = {{ 255, 255 , 0 , 0 }}; break;
         case Yellow : color_ = {{ 255, 0 , 255 , 255 }}; break;
+        case Purple : color_ = {{ 255, 160, 32, 240 }}; break;
         }
     }
 
