@@ -22,6 +22,7 @@ namespace Log {
     {
     public:
 
+        virtual ~ILogger() {}
         virtual void write( const LogEntry &l ) = 0;
     };
 

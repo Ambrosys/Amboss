@@ -103,21 +103,13 @@ namespace Log {
             stream_ = &out;
         }
 
-        void write( const LogEntry &l )
+        ThreadingModel &getThreadingModel() const { return threadingModel_; }
+
+        void write( const LogEntry &l ) override
         {
             WriteLock lock( threadingModel_ );
             writeUnlocked( l );
         }
-        
-    protected:
-        
-        BasicOStreamLogger( Formatter formatter , Filter filter )
-        : stream_( nullptr ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) ) , threadingModel_()
-        {
-        }
-
-
-    private:
 
         void writeUnlocked( const LogEntry &l )
         {
@@ -131,10 +123,20 @@ namespace Log {
             }
         }
 
+    protected:
+
+        BasicOStreamLogger( Formatter formatter , Filter filter )
+        : stream_( nullptr ) , formatter_( std::move( formatter ) ) , filter_( std::move( filter ) ) , threadingModel_()
+        {
+        }
+
+
+    private:
+
         std::ostream *stream_;
         Formatter formatter_;
         Filter filter_;
-        ThreadingModel threadingModel_;
+        mutable ThreadingModel threadingModel_;
     };
 
     typedef BasicOStreamLogger< SingleThreadModel > OStreamLogger;
