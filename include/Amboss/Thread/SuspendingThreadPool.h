@@ -34,7 +34,6 @@ namespace Thread {
         typedef FunctionWrapper task_type;
     
         SuspendingThreadPool( size_t threadCount = std::thread::hardware_concurrency() )
-        :   done_( false )
         {
             for( size_t i=0; i<threadCount; ++i )
                 threads_.push_back( std::thread( &SuspendingThreadPool::worker_thread, this ) );
@@ -70,16 +69,25 @@ namespace Thread {
         bool empty() const
         {
             std::lock_guard<std::mutex> mutexLocker( mutex_ );
-            return workQueue_.empty();
+            return workQueue_.empty() && !working_;
         }
 
         size_t pending() const
         {
             std::lock_guard<std::mutex> mutexLocker( mutex_ );
-            return workQueue_.size();
+            return workQueue_.size() + working_;
         }
 
         size_t threadCount() const { return threads_.size(); }
+
+        void waitUntilFinished()
+        {
+            std::unique_lock<std::mutex> mutexLocker( mutex_ );
+            notifyWhenFinished_ = true;
+            while( !workQueue_.empty() || working_ )
+                condition_.wait( mutexLocker );
+            notifyWhenFinished_ = false;
+        }
 
     private:
 
@@ -92,18 +100,24 @@ namespace Thread {
                 {
                     task_type task = std::move( workQueue_.front() );
                     workQueue_.pop();
+                    working_++;
                     mutexLocker.unlock();
                     task();
                     mutexLocker.lock();
+                    working_--;
                 }
                 else
                 {
+                    if( notifyWhenFinished_ && !working_ )
+                        condition_.notify_all();
                     condition_.wait( mutexLocker );
                 }
             }
         }
 
-        bool done_;
+        bool done_ { false };
+        bool notifyWhenFinished_ { false };
+        size_t working_ { 0 };
         std::queue<task_type> workQueue_;
         std::vector<std::thread> threads_;
 
