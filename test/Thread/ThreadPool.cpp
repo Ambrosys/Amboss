@@ -143,3 +143,13 @@ TEST( ThreadPool , testSuspendableThreadPool2 )
     }
     EXPECT_EQ( incrementor.value(), (long long)iterations * numTasks * numThreads );
 }
+
+
+TEST( ThreadPool , testPropagateException )
+{
+    struct dummy_exception : public std::runtime_error { using std::runtime_error::runtime_error; };
+    
+    ThreadPool pool;
+    auto fut = pool.submit( []( void ) { std::this_thread::sleep_for( std::chrono::milliseconds( 800 ) ); throw dummy_exception{ "Dummy error" }; } );
+    EXPECT_THROW( fut.get() , dummy_exception );
+}
