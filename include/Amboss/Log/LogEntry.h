@@ -15,6 +15,7 @@
 #include <Amboss/Util/AmbossException.h>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/algorithm/string/case_conv.hpp>
 
 #include <string>
 #include <utility>
@@ -54,14 +55,15 @@ namespace Log {
 
     inline LogLevel stringToLogLevel( const std::string &str )
     {
-        if( str == "Noise" ) return NOISE;
-        else if( str == "Trace" ) return TRACE;
-        else if( str == "Progress" ) return PROGRESS;
-        else if( str == "Info" ) return INFO;
-        else if( str == "Debug" ) return DEBUG;
-        else if( str == "Warning" ) return WARNING;
-        else if( str == "Error" ) return ERROR;
-        else if( str == "Assert" ) return ASSERT;
+        auto str2 = boost::algorithm::to_upper_copy( str );
+        if( str2 == "NOISE" ) return NOISE;
+        else if( str2 == "TRACE" ) return TRACE;
+        else if( str2 == "PROGRESS" ) return PROGRESS;
+        else if( str2 == "INFO" ) return INFO;
+        else if( str2 == "DEBUG" ) return DEBUG;
+        else if( str2 == "WARNING" ) return WARNING;
+        else if( str2 == "ERROT" ) return ERROR;
+        else if( str2 == "ASSERT" ) return ASSERT;
         else throw Amboss::Util::AmbossException( std::string( "Unknow log level type " ) + str );
     }
 
