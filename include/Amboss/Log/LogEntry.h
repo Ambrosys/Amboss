@@ -20,6 +20,8 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <ostream>
+#include <istream>
 
 
 namespace Amboss {
@@ -65,6 +67,20 @@ namespace Log {
         else if( str2 == "ERROT" ) return ERROR;
         else if( str2 == "ASSERT" ) return ASSERT;
         else throw Amboss::Util::AmbossException( std::string( "Unknow log level type " ) + str );
+    }
+    
+    inline std::ostream& operator<<( std::ostream& out , LogLevel const& level )
+    {
+        out << logLevelName( level );
+        return out;
+    }
+    
+    inline std::istream& operator>>( std::istream& in , LogLevel& level )
+    {
+        std::string token;
+        in >> token;
+        level = stringToLogLevel( token );
+        return in;
     }
 
     struct LogEntry
