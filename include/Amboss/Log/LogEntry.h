@@ -64,9 +64,9 @@ namespace Log {
         else if( str2 == "INFO" ) return INFO;
         else if( str2 == "DEBUG" ) return DEBUG;
         else if( str2 == "WARNING" ) return WARNING;
-        else if( str2 == "ERROT" ) return ERROR;
+        else if( str2 == "ERROR" ) return ERROR;
         else if( str2 == "ASSERT" ) return ASSERT;
-        else throw Amboss::Util::AmbossException( std::string( "Unknow log level type " ) + str );
+        else throw Amboss::Util::AmbossException( std::string( "Unknown log level type " ) + str );
     }
     
     inline std::ostream& operator<<( std::ostream& out , LogLevel const& level )
