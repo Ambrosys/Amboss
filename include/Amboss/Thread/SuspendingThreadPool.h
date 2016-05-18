@@ -39,6 +39,16 @@ namespace Thread {
                 threads_.push_back( std::thread( &SuspendingThreadPool::worker_thread, this ) );
         }
         
+        /// Late initialization, needed e.g. for CppCMS as daemon (otherwise threads don't wake up)
+        void lateInit( size_t threadCount = std::thread::hardware_concurrency() )
+        {
+            std::lock_guard<std::mutex> mutexLocker( mutex_ );
+            if ( threads_.size() == 0 ) {
+                for( size_t i=0; i<threadCount; ++i )
+                    threads_.push_back( std::thread( &SuspendingThreadPool::worker_thread, this ) );
+            }
+        }
+
         ~SuspendingThreadPool()
         {
             mutex_.lock();
