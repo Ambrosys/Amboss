@@ -57,7 +57,7 @@ namespace Log {
 
     inline LogLevel stringToLogLevel( const std::string &str )
     {
-        auto str2 = boost::algorithm::to_upper_copy( str );
+	std::string str2 = boost::algorithm::to_upper_copy( str );
         if( str2 == "NOISE" ) return NOISE;
         else if( str2 == "TRACE" ) return TRACE;
         else if( str2 == "PROGRESS" ) return PROGRESS;
