@@ -16,46 +16,56 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <map>
 
 namespace Amboss {
 namespace KML {
 
 enum GlobalColor
 {
-    White , Black , Red , Green , Blue , Yellow, Purple
+    White , Gray , Black , Red , DarkRed , Green , Blue , Yellow , DarkYellow , Purple
 };
+
+static std::map< std::string , GlobalColor > nameMap = { {"White", White} , {"Gray", Gray} , {"Black", Black} , {"Red", Red},
+                                                         {"DarkRed", DarkRed} , {"Green", Green} , {"Blue", Blue} , {"Yellow", Yellow} , 
+                                                         {"DarkYellow", DarkYellow} , {"Purple", Purple} };
 
 class Color
 {
+    void initColor( const GlobalColor &c )
+    {
+        switch( c )
+        {
+        case White :      color_ = {{ 255, 255 , 255 , 255 }}; break;
+        case Gray :       color_ = {{ 255, 128 , 128 , 128 }}; break;
+        case Black :      color_ = {{ 255, 0 , 0 , 0 }}; break;
+        case Red :        color_ = {{ 255, 0 , 0 , 255 }}; break;
+        case DarkRed :    color_ = {{ 255, 0 , 0 , 153 }}; break;
+        case Green :      color_ = {{ 255, 0 , 255 , 0 }}; break;
+        case Blue :       color_ = {{ 255, 255 , 0 , 0 }}; break;
+        case Yellow :     color_ = {{ 255, 0 , 255 , 255 }}; break;
+        case DarkYellow : color_ = {{ 255, 0 , 204 , 204 }}; break;
+        case Purple :     color_ = {{ 255, 160, 32, 240 }}; break;
+        }
+    }
 public:
 
     Color( void ) : color_() { }
     Color( unsigned char r , unsigned char g , unsigned char b ) : color_( {{ 255 , b , g , r }} ) { }
     Color( unsigned char r , unsigned char g , unsigned char b , unsigned char a ) : color_( {{ a , b , g , r }} ) { }
-    Color( const GlobalColor &c ) : color_()
-    {
-        switch( c )
-        {
-        case White : color_ = {{ 255, 255 , 255 , 255 }}; break;
-        case Black : color_ = {{ 255, 0 , 0 , 0 }}; break;
-        case Red : color_ = {{ 255, 0 , 0 , 255 }}; break;
-        case Green : color_ = {{ 255, 0 , 255 , 0 }}; break;
-        case Blue : color_ = {{ 255, 255 , 0 , 0 }}; break;
-        case Yellow : color_ = {{ 255, 0 , 255 , 255 }}; break;
-        case Purple : color_ = {{ 255, 160, 32, 240 }}; break;
-        }
-    }
+    Color( const GlobalColor &c ) : color_() { initColor( c ); }
+    Color( const std::string& cs ) : color_() { initColor( nameMap.at( cs ) ); }
 
     unsigned char alpha( void ) const { return color_[0]; }
-    unsigned char blue( void ) const { return color_[1]; }
+    unsigned char blue( void )  const { return color_[1]; }
     unsigned char green( void ) const { return color_[2]; }
-    unsigned char red( void ) const { return color_[3]; }
+    unsigned char red( void )   const { return color_[3]; }
 
 
     unsigned char& alpha( void ) { return color_[0]; }
-    unsigned char& blue( void ) { return color_[1]; }
+    unsigned char& blue( void )  { return color_[1]; }
     unsigned char& green( void ) { return color_[2]; }
-    unsigned char& red( void ) { return color_[3]; }
+    unsigned char& red( void )   { return color_[3]; }
 
 
     std::string kmlString( void ) const
