@@ -1,4 +1,2 @@
 build
 *.kdev4
-gmock
-gtest

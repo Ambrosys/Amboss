@@ -1,0 +1,6 @@
+[submodule "gtest"]
+	path = gtest
+	url = https://github.com/Ambrosys/gtest
+[submodule "gmock"]
+	path = gmock
+	url = https://github.com/Ambrosys/gmock
